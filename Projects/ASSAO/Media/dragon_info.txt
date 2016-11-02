@@ -1,0 +1,3 @@
+Dragon model obtained from
+
+http://www.cc.gatech.edu/projects/large_models/index.html

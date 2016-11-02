@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Modules\Core\Containers\vaSparseArray.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Misc\vaBenchmarkTool.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Misc\vaCRC64.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Misc\vaPoissonDiskGenerator.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Misc\vaProfiler.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Misc\vaTelemetryServer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformFileStream.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformFileTools.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSocket.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformThread.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaApplication.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaInputKeyboard.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaInputMouse.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaPlatformBase.cpp" />
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaPlatformStringTools.cpp" />
+    <ClCompile Include="..\..\Modules\Core\System\vaFileStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\System\vaFileTools.cpp" />
+    <ClCompile Include="..\..\Modules\Core\System\vaMemoryStream.cpp" />
+    <ClCompile Include="..\..\Modules\Core\System\vaThreadPool.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaApplicationBase.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaCore.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaGeometry.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaLog.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaMath.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaMemory.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaStringTools.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaTypeFactory.cpp" />
+    <ClCompile Include="..\..\Modules\Core\vaUIDObject.cpp" />
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\DirectX11\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\imgui_demo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\Modules\IntegratedExternals\tinyxml2\tinyxml2.cpp" />
+    <ClCompile Include="..\..\Modules\IntegratedExternals\vaImguiIntegration.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaASSAODX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaPostProcessBlurDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaPostProcessDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaPostProcessTonemapDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaSimpleParticlesDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaSimpleShadowMapDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaSkyDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC4BC5.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC6HBC7.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexCompress.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexConvert.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexD3D11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexDDS.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexImage.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexMipmaps.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexUtil.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab\ScreenGrab.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas2DDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas3DDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXCore.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXFont.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXRecOMatic.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXShader.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXTools.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaGBufferDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaGPUTimerDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaLightingDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceContextDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderingGlobalsDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderingToolsDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderMaterialDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderMeshDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaTextureDX11.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaTriangleMeshDX11.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaASSAO.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaPostProcess.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaPostProcessBlur.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaPostProcessTonemap.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaSimpleParticles.cpp">
+      <IntrinsicFunctions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</IntrinsicFunctions>
+      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Full</Optimization>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaSimpleShadowMap.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaSky.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\EmbeddedRenderingMedia.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaAssetPack.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaGBuffer.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaGPUTimer.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaLighting.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderDevice.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderDeviceContext.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaRendering.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderingGlobals.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderMaterial.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderMesh.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaStandardShapes.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaTexture.cpp" />
+    <ClCompile Include="..\..\Modules\Rendering\vaTextureTypes.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaAssetImporter.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaAssetImporter_Assimp.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaAssetImporter_SDKMESH.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaCameraBase.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaCameraControllers.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaScene.cpp" />
+    <ClCompile Include="..\..\Modules\Scene\vaSceneMesh.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Modules\Core\Containers\vaSparseArray.h" />
+    <ClInclude Include="..\..\Modules\Core\Containers\vaTrackerTrackee.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaBenchmarkTool.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaCRC64.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaDelegate.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaPoissonDiskGenerator.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaProfiler.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaSignal.h" />
+    <ClInclude Include="..\..\Modules\Core\Misc\vaTelemetryServer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformFileStream.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSocket.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSystemTimer.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformThreading.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaApplication.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaInputKeyboard.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaInputMouse.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaPlatformBase.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaCriticalSection.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaFileStream.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaFileTools.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaMemoryStream.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaSemaphore.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaSocket.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaStream.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaSystemTimer.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaThread.h" />
+    <ClInclude Include="..\..\Modules\Core\System\vaThreadPool.h" />
+    <ClInclude Include="..\..\Modules\Core\vaApplicationBase.h" />
+    <ClInclude Include="..\..\Modules\Core\vaCore.h" />
+    <ClInclude Include="..\..\Modules\Core\vaCoreIncludes.h" />
+    <ClInclude Include="..\..\Modules\Core\vaCoreTypes.h" />
+    <ClInclude Include="..\..\Modules\Core\vaGeometry.h" />
+    <ClInclude Include="..\..\Modules\Core\vaInput.h" />
+    <ClInclude Include="..\..\Modules\Core\vaLog.h" />
+    <ClInclude Include="..\..\Modules\Core\vaMath.h" />
+    <ClInclude Include="..\..\Modules\Core\vaMemory.h" />
+    <ClInclude Include="..\..\Modules\Core\vaRandom.h" />
+    <ClInclude Include="..\..\Modules\Core\vaSingleton.h" />
+    <ClInclude Include="..\..\Modules\Core\vaSTL.h" />
+    <ClInclude Include="..\..\Modules\Core\vaStringTools.h" />
+    <ClInclude Include="..\..\Modules\Core\vaTypeFactory.h" />
+    <ClInclude Include="..\..\Modules\Core\vaUIDObject.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\DirectX11\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\imconfig.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\imgui.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\stb_rect_pack.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\stb_textedit.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\stb_truetype.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\tinyxml2\tinyxml2.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaAssimpIntegration.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaBulletPhysicsIntegration.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaImguiIntegration.h" />
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaTinyxml2Integration.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Effects\vaSimpleShadowMapDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DDS.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTex.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab\ScreenGrab.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas2DDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas3DDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXCore.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXFont.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXIncludes.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXRecOMatic.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXShader.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXTools.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaGPUTimerDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceContextDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderingGlobalsDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderingToolsDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderMaterialDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaTextureDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaTriangleMeshDX11.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaASSAO.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaPostProcess.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaPostProcessBlur.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaPostProcessTonemap.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaSimpleParticles.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaSimpleShadowMap.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaSky.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaASSAO_main_disk.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaASSAO_types.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaShaderCore.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes_PostProcess.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes_PostProcessBlur.h" />
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes_PostProcessTonemap.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaAssetPack.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaCanvasImpl.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaDebugCanvas.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaGBuffer.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaGPUTimer.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaLighting.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderDevice.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderDeviceContext.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRendering.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderingGlobals.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderingIncludes.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderingTools.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderMaterial.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderMesh.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaStandardRenderingVertexTypes.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaStandardShapes.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaTexture.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaTextureTypes.h" />
+    <ClInclude Include="..\..\Modules\Rendering\vaTriangleMesh.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaAssetImporter.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaCameraBase.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaCameraControllers.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaScene.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaSceneIncludes.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaSceneMesh.h" />
+    <ClInclude Include="..\..\Modules\Scene\vaSceneTools.h" />
+    <ClInclude Include="..\..\Modules\vaConfig.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformCriticalSection.inl" />
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSemaphore.inl" />
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSystemTimer.inl" />
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformThreading.inl" />
+    <None Include="..\..\Modules\Core\vaGeometry.inl" />
+    <None Include="..\..\Modules\IntegratedExternals\imgui\LICENSE" />
+    <None Include="..\..\Modules\IntegratedExternals\imgui\README.md" />
+    <None Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTex.inl" />
+    <None Include="..\..\Modules\Rendering\EmbedRenderingMedia.bat">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaCanvas.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaGBuffer.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaASSAO.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaLighting.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaMaterialShared.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaPostProcess.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaPostProcessBlur.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaPostProcessTonemap.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaRenderMesh.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaShared.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSimpleMesh.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSimpleParticles.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSimpleShadowMap.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSky.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Modules\vaTODO.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{30430E2D-C12E-4537-866E-52B1B49F6410}</ProjectGuid>
+    <RootNamespace>AllModules</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>$(ProjectDir)..\..\Modules;$(ProjectDir)..\..\Modules\Core\Platform\WindowsPC;$(ProjectDir)..\..\Dependencies\AntTweakBar\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\Dependencies\AntTweakBar\lib;$(ProjectDir)..\..\Modules\IntegratedExternals\assimp\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>ClCompile</CustomBuildBeforeTargets>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>$(ProjectDir)..\..\Modules;$(ProjectDir)..\..\Modules\Core\Platform\WindowsPC;$(ProjectDir)..\..\Dependencies\AntTweakBar\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\Dependencies\AntTweakBar\lib;$(ProjectDir)..\..\Modules\IntegratedExternals\assimp\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>ClCompile</CustomBuildBeforeTargets>
+    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <PreprocessorDefinitions>_DEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OpenMPSupport>false</OpenMPSupport>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <CustomBuildStep>
+      <Command>$(ProjectDir)..\..\Modules\Rendering\EmbedRenderingMedia.bat $(ProjectDir)..\..\Modules\Rendering\</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>(Re)embedding media (can be disabled)</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(ProjectDir)..\..\Modules\Rendering\EmbeddedRenderingMediaDummyAlwaysExecute.cpp</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <TreatOutputAsContent>false</TreatOutputAsContent>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>false</OpenMPSupport>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <CustomBuildStep>
+      <Command>$(ProjectDir)..\..\Modules\Rendering\EmbedRenderingMedia.bat $(ProjectDir)..\..\Modules\Rendering\</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>(Re)embedding media (can be disabled)</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>$(ProjectDir)..\..\Modules\Rendering\EmbeddedRenderingMediaDummyAlwaysExecute.cpp</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <TreatOutputAsContent>false</TreatOutputAsContent>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

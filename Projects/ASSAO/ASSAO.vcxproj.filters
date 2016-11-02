@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Media">
+      <UniqueIdentifier>{e308ebc0-8ee7-4028-bebe-3cf34ce38451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media\Shaders">
+      <UniqueIdentifier>{755ea58e-6aa8-4108-89b9-5cdcdac76e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASSAO">
+      <UniqueIdentifier>{481259c1-b1c0-4848-957b-441a1f5f35eb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ExternalSSAOWrapperDX11.cpp" />
+    <ClCompile Include="ASSAOWrapper.cpp" />
+    <ClCompile Include="ASSAOWrapperDX11.cpp" />
+    <ClCompile Include="ASSAO\ASSAODX11.cpp">
+      <Filter>ASSAO</Filter>
+    </ClCompile>
+    <ClCompile Include="ASSAODemo.cpp" />
+    <ClCompile Include="ASSAODemoDX11.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ExternalSSAOWrapper.h" />
+    <ClInclude Include="ASSAOWrapper.h" />
+    <ClInclude Include="ASSAO\ASSAO.h">
+      <Filter>ASSAO</Filter>
+    </ClInclude>
+    <ClInclude Include="ASSAODemo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Media\Shaders\SSAODemoGlobals.hlsl">
+      <Filter>Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ASSAO\ASSAO.hlsl">
+      <Filter>ASSAO</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

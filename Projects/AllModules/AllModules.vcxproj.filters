@@ -1,0 +1,812 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{c4fa04ef-fd30-4b05-8427-9899d7a80963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{3e6a1c82-f6c1-4298-9150-5d7aadfd6195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{0c095dd8-7cef-40c3-b67d-f19f21a90280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Containers">
+      <UniqueIdentifier>{51d1850b-8d08-4267-94ef-7182e96cbe91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Misc">
+      <UniqueIdentifier>{a5d48b8a-dc67-4dcf-93d8-9c15230f2d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Platform">
+      <UniqueIdentifier>{e97763b0-8033-45ca-92b5-a698b891aa40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Platform\WindowsPC">
+      <UniqueIdentifier>{07044362-76e6-403b-9ef8-b77f2a1f5804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Platform\WindowsPC\System">
+      <UniqueIdentifier>{b4e7d638-200b-43ea-a793-c858ed17c981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\System">
+      <UniqueIdentifier>{b0b60839-4a7a-4cad-90b4-4bd73466c38b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX">
+      <UniqueIdentifier>{119bf7c1-797a-419e-9cca-e8b3e60d945d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Effects">
+      <UniqueIdentifier>{0f36819e-99cc-4842-a102-86c8e0091619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Effects">
+      <UniqueIdentifier>{b68f391a-9abb-4e85-b9a1-3906a7f706bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Media">
+      <UniqueIdentifier>{5372351c-200e-4eea-bf2b-81b976904b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Media\Textures">
+      <UniqueIdentifier>{f8f655e4-429f-4f51-90ea-87afe73a0bad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Media\Shaders">
+      <UniqueIdentifier>{9ada47b9-7d8c-44cf-bff8-25a58335a4ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IntegratedExternals">
+      <UniqueIdentifier>{40d3a7b4-0b26-4de4-bae6-5a137d822caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IntegratedExternals\imgui">
+      <UniqueIdentifier>{d2c631ad-6609-49b8-9940-c7fc490b5c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\imgui">
+      <UniqueIdentifier>{15837465-3fe8-405d-bbe6-03fc4a180102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IntegratedExternals\tinyxml2">
+      <UniqueIdentifier>{f2185e0b-a2fe-45c6-b71e-9af171292637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Tools">
+      <UniqueIdentifier>{e9e2848e-2949-4986-a992-6b08f69e5f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Tools\DirectXTex-master">
+      <UniqueIdentifier>{c8d9fff0-5e92-40f1-88e0-77a6ee2dcc21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader">
+      <UniqueIdentifier>{0ca3cac0-2b11-4614-bca6-df41d1a21b30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Tools\DirectXTex-master\DirectXTex">
+      <UniqueIdentifier>{137d9964-1169-4523-ae9f-9d553b0c750e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab">
+      <UniqueIdentifier>{5fa42e1a-b77e-44ac-aaa5-2e274485a993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader">
+      <UniqueIdentifier>{7048089d-cac9-4cfc-b848-3d98723ccfc9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Modules\Core\vaCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaGeometry.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaMath.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaMemory.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaStringTools.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaTypeFactory.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Containers\vaSparseArray.cpp">
+      <Filter>Core\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Misc\vaCRC64.cpp">
+      <Filter>Core\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Misc\vaTelemetryServer.cpp">
+      <Filter>Core\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaPlatformBase.cpp">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaPlatformStringTools.cpp">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformFileStream.cpp">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformFileTools.cpp">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSocket.cpp">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformThread.cpp">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\System\vaFileStream.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\System\vaFileTools.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\System\vaMemoryStream.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\System\vaThreadPool.cpp">
+      <Filter>Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaRendering.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaSky.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaTriangleMeshDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaSkyDX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaCameraBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaCameraControllers.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaTexture.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaTextureDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderingToolsDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaStandardShapes.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\EmbeddedRenderingMedia.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaSimpleParticles.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaSimpleParticlesDX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas2DDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas3DDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaSimpleShadowMap.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaSimpleShadowMapDX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderingGlobals.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderingGlobalsDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaGPUTimerDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaGPUTimer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Misc\vaBenchmarkTool.cpp">
+      <Filter>Core\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\imgui.cpp">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\imgui_demo.cpp">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\imgui_draw.cpp">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\imgui\DirectX11\imgui_impl_dx11.cpp">
+      <Filter>Rendering\DirectX\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\tinyxml2\tinyxml2.cpp">
+      <Filter>IntegratedExternals\tinyxml2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaSceneMesh.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderMeshDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderMesh.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\IntegratedExternals\vaImguiIntegration.cpp">
+      <Filter>IntegratedExternals</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaGBuffer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaGBufferDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaTextureTypes.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceContextDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderDeviceContext.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaPostProcessDX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaLighting.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaLightingDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Misc\vaProfiler.cpp">
+      <Filter>Core\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaAssetPack.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderDevice.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaLog.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaAssetImporter.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaAssetImporter_SDKMESH.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaUIDObject.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaASSAO.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaASSAODX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader\DDSTextureLoader.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab\ScreenGrab.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexUtil.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexD3D11.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexDDS.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexImage.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexConvert.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexCompress.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTexMipmaps.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC4BC5.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC6HBC7.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaRenderMaterialDX11.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\vaRenderMaterial.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader\WICTextureLoader.cpp">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Scene\vaAssetImporter_Assimp.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXCore.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXFont.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXRecOMatic.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXShader.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\vaDirectXTools.cpp">
+      <Filter>Rendering\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaApplication.cpp">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaInputKeyboard.cpp">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Platform\WindowsPC\vaInputMouse.cpp">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\vaApplicationBase.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaPostProcess.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaPostProcessTonemap.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\Effects\vaPostProcessBlur.cpp">
+      <Filter>Rendering\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaPostProcessBlurDX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Rendering\DirectX\Effects\vaPostProcessTonemapDX11.cpp">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Modules\Core\Misc\vaPoissonDiskGenerator.cpp">
+      <Filter>Core\Misc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Modules\Core\vaCore.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaCoreIncludes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaCoreTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaGeometry.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaInput.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaMath.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaMemory.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaRandom.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaSingleton.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaSTL.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaStringTools.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaTypeFactory.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Containers\vaSparseArray.h">
+      <Filter>Core\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaCRC64.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaDelegate.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaSignal.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaTelemetryServer.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaPlatformBase.h">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformFileStream.h">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSocket.h">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSystemTimer.h">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformThreading.h">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaCriticalSection.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaFileStream.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaFileTools.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaMemoryStream.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaSemaphore.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaSocket.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaStream.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaSystemTimer.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaThread.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\System\vaThreadPool.h">
+      <Filter>Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRendering.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderingIncludes.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaStandardRenderingVertexTypes.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaTriangleMesh.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaSky.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaTriangleMeshDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaCameraBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaCameraControllers.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaTexture.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaTextureDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderingTools.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderingToolsDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaSceneTools.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaSceneIncludes.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaStandardShapes.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaSimpleParticles.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaTextureTypes.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas2DDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDebugCanvas3DDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaDebugCanvas.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderDevice.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaCanvasImpl.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaSimpleShadowMap.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Effects\vaSimpleShadowMapDX11.h">
+      <Filter>Rendering\DirectX\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderingGlobals.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderingGlobalsDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaShaderCore.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaGPUTimerDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaGPUTimer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaBenchmarkTool.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\imconfig.h">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\imgui.h">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\imgui_internal.h">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\stb_rect_pack.h">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\stb_textedit.h">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\stb_truetype.h">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\imgui\DirectX11\imgui_impl_dx11.h">
+      <Filter>Rendering\DirectX\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaBulletPhysicsIntegration.h">
+      <Filter>IntegratedExternals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaImguiIntegration.h">
+      <Filter>IntegratedExternals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\tinyxml2\tinyxml2.h">
+      <Filter>IntegratedExternals\tinyxml2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaTinyxml2Integration.h">
+      <Filter>IntegratedExternals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaSceneMesh.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Containers\vaTrackerTrackee.h">
+      <Filter>Core\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderMesh.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaGBuffer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderDeviceContextDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderDeviceContext.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaLighting.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaProfiler.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes_PostProcess.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaAssetPack.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaLog.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Scene\vaAssetImporter.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaUIDObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaASSAO.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaASSAO_main_disk.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaASSAO_types.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader\DDSTextureLoader.h">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DDSTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab\ScreenGrab.h">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\ScreenGrab</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTex.h">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\BC.h">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DDS.h">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaRenderMaterialDX11.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\vaRenderMaterial.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\IntegratedExternals\vaAssimpIntegration.h">
+      <Filter>IntegratedExternals</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader\WICTextureLoader.h">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\WICTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXCore.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXFont.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXIncludes.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXRecOMatic.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXShader.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\DirectX\vaDirectXTools.h">
+      <Filter>Rendering\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\vaConfig.h" />
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaInputKeyboard.h">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaInputMouse.h">
+      <Filter>Core\Platform\WindowsPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\vaApplicationBase.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaPostProcess.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaPostProcessTonemap.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Effects\vaPostProcessBlur.h">
+      <Filter>Rendering\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes_PostProcessBlur.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Rendering\Media\Shaders\vaSharedTypes_PostProcessTonemap.h">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Misc\vaPoissonDiskGenerator.h">
+      <Filter>Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Modules\Core\Platform\WindowsPC\vaApplication.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Modules\Core\vaGeometry.inl">
+      <Filter>Core</Filter>
+    </None>
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformCriticalSection.inl">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </None>
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSemaphore.inl">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </None>
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformSystemTimer.inl">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </None>
+    <None Include="..\..\Modules\Rendering\EmbedRenderingMedia.bat">
+      <Filter>Rendering</Filter>
+    </None>
+    <None Include="..\..\Modules\Core\Platform\WindowsPC\System\vaPlatformThreading.inl">
+      <Filter>Core\Platform\WindowsPC\System</Filter>
+    </None>
+    <None Include="..\..\Modules\IntegratedExternals\imgui\LICENSE">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </None>
+    <None Include="..\..\Modules\IntegratedExternals\imgui\README.md">
+      <Filter>IntegratedExternals\imgui</Filter>
+    </None>
+    <None Include="..\..\Modules\Rendering\DirectX\Tools\DirectXTex-master\DirectXTex\DirectXTex.inl">
+      <Filter>Rendering\DirectX\Tools\DirectXTex-master\DirectXTex</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSimpleMesh.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaShared.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaCanvas.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaMaterialShared.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSky.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSimpleParticles.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaSimpleShadowMap.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaRenderMesh.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaPostProcess.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaGBuffer.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaLighting.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaASSAO.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaPostProcessBlur.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Modules\Rendering\Media\Shaders\vaPostProcessTonemap.hlsl">
+      <Filter>Rendering\Media\Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Modules\vaTODO.txt" />
+  </ItemGroup>
+</Project>

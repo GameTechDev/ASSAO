@@ -1,0 +1,2 @@
+All assets obtained from http://graphics.cs.williams.edu/data/meshes.xml or links provided on the said page; check individual .txt files for licenses. 
+Imported using www.assimp.org.
