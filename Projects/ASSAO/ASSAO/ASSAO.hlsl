@@ -444,6 +444,9 @@ float3 DecodeNormal( float3 encodedNormal )
     normal = mul( normal, (float3x3)g_ASSAOConsts.NormalsWorldToViewspaceMatrix ).xyz; 
 #endif
 
+    // normal = normalize( normal );    // normalize adds around 2.5% cost on High settings but makes little (PSNR 66.7) visual difference when normals are as in the sample (stored in R8G8B8A8_UNORM,
+    //                                  // decoded in the shader), however it will likely be required if using different encoding/decoding or the inputs are not normalized, etc.
+
     return normal;
 }
 
