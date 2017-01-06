@@ -359,6 +359,8 @@ private:
 
     ID3D11PixelShader *                     m_pixelShaderPrepareDepths;
     ID3D11PixelShader *                     m_pixelShaderPrepareDepthsAndNormals;
+    ID3D11PixelShader *                     m_pixelShaderPrepareDepthsHalf;
+    ID3D11PixelShader *                     m_pixelShaderPrepareDepthsAndNormalsHalf;
     ID3D11PixelShader *                     m_pixelShaderPrepareDepthMip[SSAO_DEPTH_MIP_LEVELS - 1];
     ID3D11PixelShader *                     m_pixelShaderGenerate[5];
     ID3D11PixelShader *                     m_pixelShaderSmartBlur;
@@ -366,6 +368,7 @@ private:
     ID3D11PixelShader *                     m_pixelShaderApply;
     ID3D11PixelShader *                     m_pixelShaderNonSmartBlur;
     ID3D11PixelShader *                     m_pixelShaderNonSmartApply;
+    ID3D11PixelShader *                     m_pixelShaderNonSmartHalfApply;
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
     ID3D11PixelShader *                     m_pixelShaderGenerateImportanceMap;
     ID3D11PixelShader *                     m_pixelShaderPostprocessImportanceMapA;
@@ -466,6 +469,8 @@ ASSAODX11::ASSAODX11( const ASSAO_CreateDescDX11 * createDesc )
 
     m_pixelShaderPrepareDepths                      = NULL;
     m_pixelShaderPrepareDepthsAndNormals            = NULL;
+    m_pixelShaderPrepareDepthsHalf                  = NULL;
+    m_pixelShaderPrepareDepthsAndNormalsHalf        = NULL;
     for( int i = 0; i < _countof( m_pixelShaderPrepareDepthMip ); i++ )
         m_pixelShaderPrepareDepthMip[ i ]           = NULL;
     for( int i = 0; i < _countof( m_pixelShaderGenerate ); i++ )
@@ -475,6 +480,7 @@ ASSAODX11::ASSAODX11( const ASSAO_CreateDescDX11 * createDesc )
     m_pixelShaderNonSmartBlur                       = NULL;
     m_pixelShaderApply                              = NULL;
     m_pixelShaderNonSmartApply                      = NULL;
+    m_pixelShaderNonSmartHalfApply                  = NULL;
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
     m_pixelShaderGenerateImportanceMap              = NULL;
     m_pixelShaderPostprocessImportanceMapA          = NULL;
@@ -696,6 +702,12 @@ bool ASSAODX11::InitializeDX( const ASSAO_CreateDescDX11 * createDesc )
             hr = CreatePixelShader( createDesc, shaderMacros, "PSPrepareDepthsAndNormals", "ps_5_0", shaderFlags, &m_pixelShaderPrepareDepthsAndNormals );
             if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
 
+            hr = CreatePixelShader( createDesc, shaderMacros, "PSPrepareDepthsHalf", "ps_5_0", shaderFlags, &m_pixelShaderPrepareDepthsHalf );
+            if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
+
+            hr = CreatePixelShader( createDesc, shaderMacros, "PSPrepareDepthsAndNormalsHalf", "ps_5_0", shaderFlags, &m_pixelShaderPrepareDepthsAndNormalsHalf );
+            if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
+
             hr = CreatePixelShader( createDesc, shaderMacros, "PSPrepareDepthMip1", "ps_5_0", shaderFlags, &m_pixelShaderPrepareDepthMip[0] );
             if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
 
@@ -735,6 +747,9 @@ bool ASSAODX11::InitializeDX( const ASSAO_CreateDescDX11 * createDesc )
             if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
 
             hr = CreatePixelShader( createDesc, shaderMacros, "PSNonSmartApply", "ps_5_0", shaderFlags, &m_pixelShaderNonSmartApply );
+            if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
+
+            hr = CreatePixelShader( createDesc, shaderMacros, "PSNonSmartHalfApply", "ps_5_0", shaderFlags, &m_pixelShaderNonSmartHalfApply );
             if( FAILED( hr ) ) { assert( false ); CleanupDX(); return false; }
 
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
@@ -784,6 +799,8 @@ void ASSAODX11::CleanupDX( )
 
     SAFE_RELEASE( m_pixelShaderPrepareDepths );
     SAFE_RELEASE( m_pixelShaderPrepareDepthsAndNormals );
+    SAFE_RELEASE( m_pixelShaderPrepareDepthsHalf );
+    SAFE_RELEASE( m_pixelShaderPrepareDepthsAndNormalsHalf );
     for( int i = 0; i < _countof( m_pixelShaderPrepareDepthMip ); i++ )
         SAFE_RELEASE( m_pixelShaderPrepareDepthMip[ i ]         );
     for( int i = 0; i < _countof( m_pixelShaderGenerate ); i++ )
@@ -793,6 +810,7 @@ void ASSAODX11::CleanupDX( )
     SAFE_RELEASE( m_pixelShaderNonSmartBlur                     );
     SAFE_RELEASE( m_pixelShaderApply                            );
     SAFE_RELEASE( m_pixelShaderNonSmartApply                    );
+    SAFE_RELEASE( m_pixelShaderNonSmartHalfApply                );
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
     SAFE_RELEASE( m_pixelShaderGenerateImportanceMap            );
     SAFE_RELEASE( m_pixelShaderPostprocessImportanceMapA        );
@@ -875,22 +893,38 @@ void           ASSAODX11::PrepareDepths( const ASSAO_Settings & settings, const 
         dx11Context->RSSetScissorRects( 1, &rect );  // no scissor for this
     }
 
-    ID3D11RenderTargetView* fourDepths[] = { m_halfDepths[0].RTV, m_halfDepths[1].RTV, m_halfDepths[2].RTV, m_halfDepths[3].RTV };
-
+    ID3D11RenderTargetView* fourDepths[]    = { m_halfDepths[0].RTV, m_halfDepths[1].RTV, m_halfDepths[2].RTV, m_halfDepths[3].RTV };
+    ID3D11RenderTargetView* twoDepths[]     = { m_halfDepths[0].RTV, m_halfDepths[3].RTV };
     if( !generateNormals )
     {
         //VA_SCOPE_CPUGPU_TIMER( PrepareDepths, drawContext.APIContext );
 
-        dx11Context->OMSetRenderTargets( _countof(fourDepths), fourDepths, NULL );
-        FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepths );
+        if( settings.SkipHalfPixelsOnLowQualityLevel )
+        {
+            dx11Context->OMSetRenderTargets( _countof(twoDepths), twoDepths, NULL );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsHalf );
+        }
+        else
+        {
+            dx11Context->OMSetRenderTargets( _countof(fourDepths), fourDepths, NULL );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepths );
+        }
     }
     else
     {
         //VA_SCOPE_CPUGPU_TIMER( PrepareDepthsAndNormals, drawContext.APIContext );
 
         ID3D11UnorderedAccessView * UAVs[] = { m_normals.UAV };
-        dx11Context->OMSetRenderTargetsAndUnorderedAccessViews( 4, fourDepths, NULL, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, UAVs, NULL );
-        FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormals );
+        if( settings.SkipHalfPixelsOnLowQualityLevel )
+        {
+            dx11Context->OMSetRenderTargetsAndUnorderedAccessViews( _countof(twoDepths), twoDepths, NULL, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, UAVs, NULL );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormalsHalf );
+        }
+        else
+        {
+            dx11Context->OMSetRenderTargetsAndUnorderedAccessViews( _countof(fourDepths), fourDepths, NULL, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, UAVs, NULL );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormals );
+        }
     }
 
     // only do mipmaps for higher quality levels (not beneficial on quality level 1, and detrimental on quality level 0)
@@ -938,6 +972,9 @@ void           ASSAODX11::GenerateSSAO( const ASSAO_Settings & settings, const A
 
     for( int pass = 0; pass < passCount; pass++ )
     {
+        if( settings.SkipHalfPixelsOnLowQualityLevel && ( (pass == 1) || (pass == 2) ) )
+            continue;
+
         int blurPasses = settings.BlurPassCount;
         blurPasses = Min( blurPasses, cMaxBlurPassCount );
 
@@ -1174,7 +1211,12 @@ void           ASSAODX11::Draw( const ASSAO_Settings & settings, const ASSAO_Inp
             ID3D11BlendState * blendState = ( inputs->DrawOpaque ) ? ( m_blendStateOpaque ) : ( m_blendStateMultiply );
             
             if( settings.QualityLevel == 0 )
-                FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
+            {
+                if( settings.SkipHalfPixelsOnLowQualityLevel )
+                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartHalfApply, blendState );
+                else
+                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
+            }
             else
                 FullscreenPassDraw( dx11Context, m_pixelShaderApply, blendState );
         }
@@ -1388,6 +1430,9 @@ void ASSAODX11::UpdateConstants( const ASSAO_Settings & settings, const ASSAO_In
         {
             //consts.EffectShadowStrength     *= 0.9f;
             effectSamplingRadiusNearLimit   *= 1.50f;
+
+            if( settings.SkipHalfPixelsOnLowQualityLevel )
+                consts.EffectRadius             *= 0.8f;
         }
         effectSamplingRadiusNearLimit /= tanHalfFOVY; // to keep the effect same regardless of FOV
 

@@ -53,6 +53,8 @@ namespace VertexAsylum
         
         vaDirectXPixelShader                    m_pixelShaderPrepareDepths;
         vaDirectXPixelShader                    m_pixelShaderPrepareDepthsAndNormals;
+        vaDirectXPixelShader                    m_pixelShaderPrepareDepthsHalf;
+        vaDirectXPixelShader                    m_pixelShaderPrepareDepthsAndNormalsHalf;
         vaDirectXPixelShader                    m_pixelShaderPrepareDepthMip[SSAO_DEPTH_MIP_LEVELS-1];
         vaDirectXPixelShader                    m_pixelShaderGenerate[6];                               // number 6 is "adaptive base"
         vaDirectXPixelShader                    m_pixelShaderSmartBlur;
@@ -60,6 +62,7 @@ namespace VertexAsylum
         vaDirectXPixelShader                    m_pixelShaderApply;
         vaDirectXPixelShader                    m_pixelShaderNonSmartBlur;
         vaDirectXPixelShader                    m_pixelShaderNonSmartApply;
+        vaDirectXPixelShader                    m_pixelShaderNonSmartHalfApply;
         vaDirectXPixelShader                    m_pixelShaderGenerateImportanceMap;
         vaDirectXPixelShader                    m_pixelShaderPostprocessImportanceMapA;
         vaDirectXPixelShader                    m_pixelShaderPostprocessImportanceMapB;
@@ -309,6 +312,8 @@ void vaASSAODX11::UpdateTextures( vaDrawContext & drawContext, int width, int he
 
         m_pixelShaderPrepareDepths.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepths", m_staticShaderMacros );
         m_pixelShaderPrepareDepthsAndNormals.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepthsAndNormals", m_staticShaderMacros );
+        m_pixelShaderPrepareDepthsHalf.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepthsHalf", m_staticShaderMacros );
+        m_pixelShaderPrepareDepthsAndNormalsHalf.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepthsAndNormalsHalf", m_staticShaderMacros );
         m_pixelShaderPrepareDepthMip[0].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepthMip1", m_staticShaderMacros );
         m_pixelShaderPrepareDepthMip[1].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepthMip2", m_staticShaderMacros );
         m_pixelShaderPrepareDepthMip[2].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSPrepareDepthMip3", m_staticShaderMacros );
@@ -341,6 +346,7 @@ void vaASSAODX11::UpdateTextures( vaDrawContext & drawContext, int width, int he
         m_pixelShaderNonSmartBlur.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSNonSmartBlur", m_staticShaderMacros );
 
         m_pixelShaderNonSmartApply.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSNonSmartApply", m_staticShaderMacros );
+        m_pixelShaderNonSmartHalfApply.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSNonSmartHalfApply", m_staticShaderMacros );
         m_pixelShaderApply.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSApply", m_staticShaderMacros );
         //m_pixelShaderApplyHalfWidth.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSApplyHalfWidth", m_staticShaderMacros );
     }
@@ -520,6 +526,9 @@ void vaASSAODX11::UpdateConstants( vaDrawContext & drawContext, const vaMatrix4x
         {
             //consts.EffectShadowStrength         *= 0.9f;
             effectSamplingRadiusNearLimit       *= 1.50f;
+
+            if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+                consts.EffectRadius             *= 0.8f;
         }
         effectSamplingRadiusNearLimit /= tanHalfFOVY; // to keep the effect same regardless of FOV
 
@@ -622,20 +631,37 @@ void vaASSAODX11::PrepareDepths( vaDrawContext & drawContext, vaTexture & depthT
     vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, depthTexture.SafeCast<vaTextureDX11*>( )->GetSRV( ), SSAO_TEXTURE_SLOT0 );
 
     const shared_ptr<vaTexture> fourDepths[] = { m_halfDepths[0], m_halfDepths[1], m_halfDepths[2], m_halfDepths[3] };
+    const shared_ptr<vaTexture> twoDepths[] = { m_halfDepths[0], m_halfDepths[3] };
     if( !generateNormals )
     {
         VA_SCOPE_CPUGPU_TIMER( PrepareDepths, drawContext.APIContext );
 
-        apiContext->SetRenderTargets( 4, fourDepths, nullptr, true );
-        FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepths );
+        if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+        {
+            apiContext->SetRenderTargets( 2, twoDepths, nullptr, true );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsHalf );
+        }
+        else
+        {
+            apiContext->SetRenderTargets( 4, fourDepths, nullptr, true );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepths );
+        }
     }
     else
     {
         VA_SCOPE_CPUGPU_TIMER( PrepareDepthsAndNormals, drawContext.APIContext );
 
         shared_ptr<vaTexture> uavs[] = { m_normals };
-        apiContext->SetRenderTargetsAndUnorderedAccessViews( 4, fourDepths, nullptr, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, uavs, true );
-        FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormals );
+        if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+        {
+            apiContext->SetRenderTargetsAndUnorderedAccessViews( 2, twoDepths, nullptr, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, uavs, true );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormalsHalf );
+        }
+        else
+        {
+            apiContext->SetRenderTargetsAndUnorderedAccessViews( 4, fourDepths, nullptr, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, uavs, true );
+            FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormals );
+        }
     }
 
     // only do mipmaps for higher quality levels
@@ -677,6 +703,9 @@ void vaASSAODX11::GenerateSSAO( vaDrawContext & drawContext, const vaMatrix4x4 &
 
     for( int pass = 0; pass < passCount; pass++ )
     {
+        if( m_settings.SkipHalfPixelsOnLowQualityLevel && ( (pass == 1) || (pass == 2) ) )
+            continue;
+
         int blurPasses = m_settings.BlurPassCount;
         blurPasses = vaMath::Min( blurPasses, cMaxBlurPassCount );
 
@@ -980,7 +1009,12 @@ void vaASSAODX11::Draw( vaDrawContext & drawContext, const vaMatrix4x4 & projMat
         apiContext->SetViewportAndScissorRect( applyVP, m_fullResOutScissorRect );
 
         if( m_settings.QualityLevel == 0 )
-            FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
+        {
+            if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+                FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartHalfApply, blendState );
+            else
+                FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
+        }
         else
             FullscreenPassDraw( dx11Context, m_pixelShaderApply, blendState );
 

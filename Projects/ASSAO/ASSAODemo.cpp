@@ -1467,8 +1467,15 @@ void ASSAODemo::OnRender( )
                 int qualityPreset = ssaoSettings.QualityLevel;
                 float comboSizeY = ImGui::GetCursorPosY();
                 ImGui::PushItemWidth( ImGui::GetContentRegionAvailWidth() ); //ImGui::GetContentRegionAvailWidth() - ImGui::CalcTextSize("Quality").x - ImGui::GetStyle().ItemSpacing.x );
-                ImGui::Combo( "Quality", &ssaoSettings.QualityLevel, "Quality: LOW\0Quality: MEDIUM\0Quality: HIGH\0Quality: HIGHEST (adaptive)\0\0" ); // Combo using values packed in a single constant string (for really quick combo)
+
+                // extension for "Lowest"
+                int qualityLevelUI = ssaoSettings.QualityLevel+1;
+                if( ssaoSettings.SkipHalfPixelsOnLowQualityLevel ) qualityLevelUI--;
+                ImGui::Combo( "Quality", &qualityLevelUI, "Quality: LOWEST\0Quality: LOW\0Quality: MEDIUM\0Quality: HIGH\0Quality: HIGHEST (adaptive)\0\0" ); // Combo using values packed in a single constant string (for really quick combo)
                 ImGui::PopItemWidth( );
+                // extension for "Lowest"
+                ssaoSettings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, 0, 4 );
+                ssaoSettings.SkipHalfPixelsOnLowQualityLevel = qualityLevelUI == 0;
                 
                 comboSizeY = ImGui::GetCursorPosY() - comboSizeY;
               

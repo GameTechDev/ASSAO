@@ -30,17 +30,21 @@ void ASSAOWrapper::IHO_Draw( )
 
 #ifdef SSAODEMO_ENABLE_FINAL_INTEL_SSAO
 
+    // extension for "Lowest"
+    int qualityLevelUI = m_settings.QualityLevel+1;
+    if( m_settings.SkipHalfPixelsOnLowQualityLevel ) qualityLevelUI--;
+
     // Keyboard input (but let the ImgUI controls have input priority)
     if( !ImGui::GetIO( ).WantCaptureKeyboard )
     {
         if( ( vaInputKeyboardBase::GetCurrent( ) != nullptr ) && vaInputKeyboardBase::GetCurrent( )->IsKeyClicked( KK_OEM_4 ) )
-            m_settings.QualityLevel--;
+            qualityLevelUI--;
         if( ( vaInputKeyboardBase::GetCurrent( ) != nullptr ) && vaInputKeyboardBase::GetCurrent( )->IsKeyClicked( KK_OEM_6 ) )
-            m_settings.QualityLevel++;
+            qualityLevelUI++;
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
-        m_settings.QualityLevel = vaMath::Clamp( m_settings.QualityLevel, 0, 3 );
+        qualityLevelUI = vaMath::Clamp( qualityLevelUI, 0, 4 );
 #else
-        m_settings.QualityLevel = vaMath::Clamp( m_settings.QualityLevel, 0, 2 );
+        qualityLevelUI = vaMath::Clamp( qualityLevelUI, 0, 3 );
 #endif
         if( ( vaInputKeyboardBase::GetCurrent( ) != nullptr ) && vaInputKeyboardBase::GetCurrent( )->IsKeyClicked( KK_OEM_1 ) )
             m_settings.AdaptiveQualityLimit -= 0.025f;
@@ -55,12 +59,20 @@ void ASSAOWrapper::IHO_Draw( )
 
     ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 1.0f, 0.8f, 0.8f, 1.0f ) );
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
-    ImGui::Combo( "Quality level", &m_settings.QualityLevel, "Low\0Medium\0High\0Highest (adaptive)\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
+    ImGui::Combo( "Quality level", &qualityLevelUI, "Lowest\0Low\0Medium\0High\0Highest (adaptive)\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
 #else
-    ImGui::Combo( "Quality level", &m_settings.QualityLevel, "Low\0Medium\0High\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
+    ImGui::Combo( "Quality level", &qualityLevelUI, "Lowest\0Low\0Medium\0High\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
 #endif
     if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Each quality level is roughly 2x more costly than the previous, except the Highest (adaptive) which is variable but, in general, above High" );
     ImGui::PopStyleColor( 1 );
+
+    // extension for "Lowest"
+#ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
+    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, 0, 3 );
+#else
+    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, 0, 2 );
+#endif
+    m_settings.SkipHalfPixelsOnLowQualityLevel = qualityLevelUI == 0;
 
     ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 0.75f, 0.75f, 0.75f, 1.0f ) );
 

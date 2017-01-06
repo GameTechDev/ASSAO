@@ -266,6 +266,16 @@ void PSPrepareDepths( in float4 inPos : SV_POSITION, out float out0 : SV_Target0
     out3 = ScreenSpaceToViewSpaceDepth( d );
 }
 
+void PSPrepareDepthsHalf( in float4 inPos : SV_POSITION, out float out0 : SV_Target0, out float out1 : SV_Target1 )
+{
+    int3 baseCoord = int3( int2(inPos.xy) * 2, 0 );
+    float a = g_DepthSource.Load( baseCoord, int2( 0, 0 ) ).x;
+    float d = g_DepthSource.Load( baseCoord, int2( 1, 1 ) ).x;
+
+    out0 = ScreenSpaceToViewSpaceDepth( a );
+    out1 = ScreenSpaceToViewSpaceDepth( d );
+}
+
 float3 CalculateNormal( const float4 edgesLRTB, float3 pixCenterPos, float3 pixLPos, float3 pixRPos, float3 pixTPos, float3 pixBPos )
 {
     // Get this pixel's viewspace normal
@@ -358,6 +368,74 @@ void PSPrepareDepthsAndNormals( in float4 inPos : SV_POSITION, out float out0 : 
     g_NormalsOutputUAV[ baseCoords + int2( 0, 0 ) ] = float4( norm0 * 0.5 + 0.5, 0.0 );
     g_NormalsOutputUAV[ baseCoords + int2( 1, 0 ) ] = float4( norm1 * 0.5 + 0.5, 0.0 );
     g_NormalsOutputUAV[ baseCoords + int2( 0, 1 ) ] = float4( norm2 * 0.5 + 0.5, 0.0 );
+    g_NormalsOutputUAV[ baseCoords + int2( 1, 1 ) ] = float4( norm3 * 0.5 + 0.5, 0.0 );
+}
+
+void PSPrepareDepthsAndNormalsHalf( in float4 inPos : SV_POSITION, out float out0 : SV_Target0, out float out1 : SV_Target1 )
+{
+    int2 baseCoords = (( int2 )inPos.xy) * 2;
+    float2 upperLeftUV = (inPos.xy - 0.25) * g_ASSAOConsts.Viewport2xPixelSize;
+
+    int3 baseCoord = int3( int2(inPos.xy) * 2, 0 );
+    float z0 = ScreenSpaceToViewSpaceDepth( g_DepthSource.Load( baseCoord, int2( 0, 0 ) ).x );
+    float z1 = ScreenSpaceToViewSpaceDepth( g_DepthSource.Load( baseCoord, int2( 1, 0 ) ).x );
+    float z2 = ScreenSpaceToViewSpaceDepth( g_DepthSource.Load( baseCoord, int2( 0, 1 ) ).x );
+    float z3 = ScreenSpaceToViewSpaceDepth( g_DepthSource.Load( baseCoord, int2( 1, 1 ) ).x );
+
+    out0 = z0;
+    out1 = z3;
+
+    float pixZs[4][4];
+
+    // middle 4
+    pixZs[1][1] = z0;
+    pixZs[2][1] = z1;
+    pixZs[1][2] = z2;
+    pixZs[2][2] = z3;
+    // left 2
+    pixZs[0][1] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2( -1, 0 ) ).x ); 
+    pixZs[0][2] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2( -1, 1 ) ).x ); 
+    // right 2
+    pixZs[3][1] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2(  2, 0 ) ).x ); 
+    pixZs[3][2] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2(  2, 1 ) ).x ); 
+    // top 2
+    pixZs[1][0] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2(  0, -1 ) ).x );
+    pixZs[2][0] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2(  1, -1 ) ).x );
+    // bottom 2
+    pixZs[1][3] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2(  0,  2 ) ).x );
+    pixZs[2][3] = ScreenSpaceToViewSpaceDepth(  g_DepthSource.SampleLevel( g_PointClampSampler, upperLeftUV, 0.0, int2(  1,  2 ) ).x );
+
+    float4 edges0 = CalculateEdges( pixZs[1][1], pixZs[0][1], pixZs[2][1], pixZs[1][0], pixZs[1][2] );
+    float4 edges1 = CalculateEdges( pixZs[2][1], pixZs[1][1], pixZs[3][1], pixZs[2][0], pixZs[2][2] );
+    float4 edges2 = CalculateEdges( pixZs[1][2], pixZs[0][2], pixZs[2][2], pixZs[1][1], pixZs[1][3] );
+    float4 edges3 = CalculateEdges( pixZs[2][2], pixZs[1][2], pixZs[3][2], pixZs[2][1], pixZs[2][3] );
+
+    float3 pixPos[4][4];
+
+    // there is probably a way to optimize the math below; however no approximation will work, has to be precise.
+
+    // middle 4
+    pixPos[1][1] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 0.0,  0.0 ), pixZs[1][1] );
+    pixPos[2][1] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 1.0,  0.0 ), pixZs[2][1] );
+    pixPos[1][2] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 0.0,  1.0 ), pixZs[1][2] );
+    pixPos[2][2] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 1.0,  1.0 ), pixZs[2][2] );
+    // left 2
+    pixPos[0][1] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( -1.0,  0.0), pixZs[0][1] );
+    //pixPos[0][2] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( -1.0,  1.0), pixZs[0][2] );
+    // right 2                                                                                     
+    //pixPos[3][1] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2(  2.0,  0.0), pixZs[3][1] );
+    pixPos[3][2] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2(  2.0,  1.0), pixZs[3][2] );
+    // top 2                                                                                       
+    pixPos[1][0] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 0.0, -1.0 ), pixZs[1][0] );
+    //pixPos[2][0] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 1.0, -1.0 ), pixZs[2][0] );
+    // bottom 2                                                                                    
+    //pixPos[1][3] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 0.0,  2.0 ), pixZs[1][3] );
+    pixPos[2][3] = NDCToViewspace( upperLeftUV + g_ASSAOConsts.ViewportPixelSize * float2( 1.0,  2.0 ), pixZs[2][3] );
+
+    float3 norm0 = CalculateNormal( edges0, pixPos[1][1], pixPos[0][1], pixPos[2][1], pixPos[1][0], pixPos[1][2] );
+    float3 norm3 = CalculateNormal( edges3, pixPos[2][2], pixPos[1][2], pixPos[3][2], pixPos[2][1], pixPos[2][3] );
+
+    g_NormalsOutputUAV[ baseCoords + int2( 0, 0 ) ] = float4( norm0 * 0.5 + 0.5, 0.0 );
     g_NormalsOutputUAV[ baseCoords + int2( 1, 1 ) ] = float4( norm3 * 0.5 + 0.5, 0.0 );
 }
 
@@ -1002,6 +1080,15 @@ float4 PSNonSmartApply( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD
     float c = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( inUV.xy, 2 ), 0.0 ).x;
     float d = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( inUV.xy, 3 ), 0.0 ).x;
     float avg = (a+b+c+d) * 0.25;
+    return float4( avg.xxx, 1.0 );
+}
+
+// edge-ignorant blur & apply, skipping half pixels in checkerboard pattern (for the Lowest quality level 0 and Settings::SkipHalfPixelsOnLowQualityLevel == true )
+float4 PSNonSmartHalfApply( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target
+{
+    float a = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( inUV.xy, 0 ), 0.0 ).x;
+    float d = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( inUV.xy, 3 ), 0.0 ).x;
+    float avg = (a+d) * 0.5;
     return float4( avg.xxx, 1.0 );
 }
 

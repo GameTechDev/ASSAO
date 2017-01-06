@@ -79,13 +79,16 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>$(SolutionDir)\Tools\Binaries\xd.exe -dc_embedded_assaoshader $(ProjectDir)ASSAO\ASSAO.hlsl $(ProjectDir)ASSAO\ASSAO_shader.c</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Compiling ASSAO.hlsl shader into .c file</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>$(ProjectDir)ASSAO\ASSAO_shader.c</Outputs>
+      <Outputs>
+      </Outputs>
     </CustomBuildStep>
     <CustomBuildStep>
       <TreatOutputAsContent>false</TreatOutputAsContent>
@@ -127,7 +130,7 @@
       <Message>Compiling ASSAO.hlsl shader into .c file</Message>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>$(ProjectDir)ASSAO\ASSAO_shader.c</Outputs>
+      <Outputs>$(ProjectDir)ASSAO\ASSAO_shader.c_dummy</Outputs>
     </CustomBuildStep>
     <CustomBuildStep>
       <TreatOutputAsContent>false</TreatOutputAsContent>
