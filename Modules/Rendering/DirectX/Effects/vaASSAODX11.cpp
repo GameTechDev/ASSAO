@@ -67,6 +67,9 @@ namespace VertexAsylum
         vaDirectXPixelShader                    m_pixelShaderPostprocessImportanceMapA;
         vaDirectXPixelShader                    m_pixelShaderPostprocessImportanceMapB;
 
+        vaDirectXPixelShader                    m_pixelShaderAlternativeApplySmartBlur[4];
+        vaDirectXPixelShader                    m_pixelShaderAlternativeApplyInterleave;
+
         //vaDirectXPixelShader                    m_pixelShaderGenerateAndApplyReferenceFullscreen;
 
 #ifdef SSAO_ALLOW_INTERNAL_SHADER_DEBUGGING
@@ -349,6 +352,12 @@ void vaASSAODX11::UpdateTextures( vaDrawContext & drawContext, int width, int he
         m_pixelShaderNonSmartHalfApply.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSNonSmartHalfApply", m_staticShaderMacros );
         m_pixelShaderApply.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSApply", m_staticShaderMacros );
         //m_pixelShaderApplyHalfWidth.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSApplyHalfWidth", m_staticShaderMacros );
+
+        m_pixelShaderAlternativeApplySmartBlur[0].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSAlternativeApplySmartBlur0", m_staticShaderMacros );
+        m_pixelShaderAlternativeApplySmartBlur[1].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSAlternativeApplySmartBlur1", m_staticShaderMacros );
+        m_pixelShaderAlternativeApplySmartBlur[2].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSAlternativeApplySmartBlur2", m_staticShaderMacros );
+        m_pixelShaderAlternativeApplySmartBlur[3].CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSAlternativeApplySmartBlur3", m_staticShaderMacros );
+        m_pixelShaderAlternativeApplyInterleave.CreateShaderFromFile( GetShaderFilePath( ), "ps_5_0", "PSAlternativeApplyInterleave", m_staticShaderMacros );
     }
 
     bool needsUpdate = false;
@@ -418,11 +427,19 @@ void vaASSAODX11::UpdateTextures( vaDrawContext & drawContext, int width, int he
     ReCreateIfNeeded( m_pingPongHalfResultA, m_halfSize, AOResultsFormat, totalSizeInMB, 1, 1, false );
     ReCreateIfNeeded( m_pingPongHalfResultB, m_halfSize, AOResultsFormat, totalSizeInMB, 1, 1, false );
     ReCreateIfNeeded( m_finalResults, m_halfSize, AOResultsFormat, totalSizeInMB, 1, 4, false );
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+    ReCreateIfNeeded( m_AAFinalResults, m_halfSize, m_formats.AAFinalAOResult, totalSizeInMB, 1, 4, false );
+#endif
 
     ReCreateIfNeeded( m_importanceMap, m_quarterSize, m_formats.ImportanceMap, totalSizeInMB, 1, 1, false );
     ReCreateIfNeeded( m_importanceMapPong, m_quarterSize, m_formats.ImportanceMap, totalSizeInMB, 1, 1, false );
     for( int i = 0; i < 4; i++ )
+    {
         m_finalResultsArrayViews[i] = shared_ptr<vaTexture>( vaTexture::CreateView( m_finalResults, vaTextureBindSupportFlags::RenderTarget, vaTextureFormat::Unknown, AOResultsFormat, vaTextureFormat::Unknown, vaTextureFormat::Unknown, 0, i ) );
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+        m_AAFinalResultsArrayViews[i] = shared_ptr<vaTexture>( vaTexture::CreateView( m_AAFinalResults, vaTextureBindSupportFlags::RenderTarget, vaTextureFormat::Unknown, m_formats.AAFinalAOResult, vaTextureFormat::Unknown, vaTextureFormat::Unknown, 0, i ) );
+#endif
+    }
     
     if( generateNormals )
         ReCreateIfNeeded( m_normals, m_size, m_formats.Normals, totalSizeInMB, 1, 1, true );
@@ -987,15 +1004,33 @@ void vaASSAODX11::Draw( vaDrawContext & drawContext, const vaMatrix4x4 & projMat
         GenerateSSAO( drawContext, projMatrix, normalmapTexture, false );
     }
 
-    // restore previous RTs
-    apiContext->SetOutputs( rtState );
-
     // Apply
     {
         VA_SCOPE_CPUGPU_TIMER( Apply, drawContext.APIContext );
+    #ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+        if( m_debugUseAlternativeApply && m_settings.QualityLevel != 0 )
+        {
+            VA_SCOPE_CPUGPU_TIMER( AlternativeApplySmartBlur, drawContext.APIContext );
+            for ( int i = 0; i < 4; i++ )
+            {
+                apiContext->SetRenderTarget( m_AAFinalResultsArrayViews[i], nullptr, true );
+                if( i == 0 )
+                {
+                    // select 4 deinterleaved AO textures (texture array)
+                    vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, m_finalResults->SafeCast<vaTextureDX11*>( )->GetSRV( ), SSAO_TEXTURE_SLOT4 );
+                }
+                FullscreenPassDraw( dx11Context, m_pixelShaderAlternativeApplySmartBlur[i] );
+            }
+        }
+    #endif
+
+        // restore previous RTs
+        apiContext->SetOutputs( rtState );
+
 
         // select 4 deinterleaved AO textures (texture array)
         vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, m_finalResults->SafeCast<vaTextureDX11*>( )->GetSRV( ), SSAO_TEXTURE_SLOT4 );
+
 
         if( m_debugShowNormals || m_debugShowEdges || m_debugShowSampleHeatmap )
         {
@@ -1016,7 +1051,18 @@ void vaASSAODX11::Draw( vaDrawContext & drawContext, const vaMatrix4x4 & projMat
                 FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
         }
         else
+        {
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+            if( m_debugUseAlternativeApply )
+            {
+                VA_SCOPE_CPUGPU_TIMER( AlternativeApplyInterleave, drawContext.APIContext );
+                vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, m_AAFinalResults->SafeCast<vaTextureDX11*>( )->GetSRV( ), SSAO_TEXTURE_SLOT4 );
+                FullscreenPassDraw( dx11Context, m_pixelShaderAlternativeApplyInterleave, blendState );
+            }
+            else
+#endif
             FullscreenPassDraw( dx11Context, m_pixelShaderApply, blendState );
+        }
 
         // restore VP
         apiContext->SetViewport( rtState.Viewport );

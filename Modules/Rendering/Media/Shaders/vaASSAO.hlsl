@@ -1179,6 +1179,97 @@ float4 PSNonSmartHalfApply( in float4 inPos : SV_POSITION, in float2 inUV : TEXC
     return float4( avg.xxx, 1.0 );
 }
 
+
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+
+float PSAlternativeApplySmartBlur( uint2 pixPosHalf, int index )
+{
+    float ao;
+    uint2 pixPos     = pixPosHalf * 2 + uint2( index % 2, index / 2 );
+
+    float2 inPos = float2( pixPos ) + float2( 0.5, 0.5 );
+
+    // calculate index in the four deinterleaved source array texture
+    int mx = (pixPos.x % 2);
+    int my = (pixPos.y % 2);
+    int ic = mx + my * 2;       // center index
+    int ih = (1-mx) + my * 2;   // neighbouring, horizontal
+    int iv = mx + (1-my) * 2;   // neighbouring, vertical
+    int id = (1-mx) + (1-my)*2; // diagonal
+    
+    float2 centerVal = g_FinalSSAO.Load( int4( pixPosHalf, ic, 0 ) ).xy;
+    
+    ao = centerVal.x;
+
+    float4 edgesLRTB = UnpackEdges( centerVal.y );
+
+    // convert index shifts to sampling offsets
+    float fmx   = (float)mx;
+    float fmy   = (float)my;
+    
+    // in case of an edge, push sampling offsets away from the edge (towards pixel center)
+    float fmxe  = (edgesLRTB.y - edgesLRTB.x);
+    float fmye  = (edgesLRTB.w - edgesLRTB.z);
+
+    // calculate final sampling offsets and sample using bilinear filter
+    float2  uvH = (inPos.xy + float2( fmx + fmxe - 0.5, 0.5 - fmy ) ) * 0.5 * g_ASSAOConsts.HalfViewportPixelSize;
+    float   aoH = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( uvH, ih ), 0 ).x;
+    float2  uvV = (inPos.xy + float2( 0.5 - fmx, fmy - 0.5 + fmye ) ) * 0.5 * g_ASSAOConsts.HalfViewportPixelSize;
+    float   aoV = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( uvV, iv ), 0 ).x;
+    float2  uvD = (inPos.xy + float2( fmx - 0.5 + fmxe, fmy - 0.5 + fmye ) ) * 0.5 * g_ASSAOConsts.HalfViewportPixelSize;
+    float   aoD = g_FinalSSAO.SampleLevel( g_LinearClampSampler, float3( uvD, id ), 0 ).x;
+
+    // reduce weight for samples near edge - if the edge is on both sides, weight goes to 0
+    float4 blendWeights;
+    blendWeights.x = 1.0;
+    blendWeights.y = (edgesLRTB.x + edgesLRTB.y) * 0.5;
+    blendWeights.z = (edgesLRTB.z + edgesLRTB.w) * 0.5;
+    blendWeights.w = (blendWeights.y + blendWeights.z) * 0.5;
+
+    // calculate weighted average
+    float blendWeightsSum   = dot( blendWeights, float4( 1.0, 1.0, 1.0, 1.0 ) );
+    ao = dot( float4( ao, aoH, aoV, aoD ), blendWeights ) / blendWeightsSum;
+
+    return ao;
+}
+
+float PSAlternativeApplySmartBlur0( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target
+{
+    return PSAlternativeApplySmartBlur( (uint2)inPos.xy, 0 );
+}
+float PSAlternativeApplySmartBlur1( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target
+{
+    return PSAlternativeApplySmartBlur( (uint2)inPos.xy, 1 );
+}
+float PSAlternativeApplySmartBlur2( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target
+{
+    return PSAlternativeApplySmartBlur( (uint2)inPos.xy, 2 );
+}
+float PSAlternativeApplySmartBlur3( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target
+{
+    return PSAlternativeApplySmartBlur( (uint2)inPos.xy, 3 );
+}
+
+float4 PSAlternativeApplyInterleave( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target
+{
+    float ao;
+    uint2 pixPos     = (uint2)inPos.xy;
+    uint2 pixPosHalf = pixPos / uint2(2, 2);
+
+#if defined(SSAO_DEBUG_SHOWNORMALS) || defined( SSAO_DEBUG_SHOWEDGES ) || defined( SSAO_DEBUG_SHOWSAMPLEHEATMAP )
+    return pow( abs( g_DebuggingOutputSRV.Load( int3( pixPos, 0 ) ) ), 2.2 );
+#endif
+
+    // calculate index in the four deinterleaved source array texture
+    int mx = (pixPos.x % 2);
+    int my = (pixPos.y % 2);
+    int ic = mx + my * 2;       // center index
+    
+    return float4( g_FinalSSAO.Load( int4( pixPosHalf, ic, 0 ) ).xxx, 0 );
+}
+
+#endif
+
 // Shaders below only needed for adaptive quality level
 
 float PSGenerateImportanceMap( in float4 inPos : SV_POSITION, in float2 inUV : TEXCOORD0 ) : SV_Target

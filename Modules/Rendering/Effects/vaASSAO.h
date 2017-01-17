@@ -86,6 +86,9 @@ namespace VertexAsylum
 #endif
             vaTextureFormat         Normals;
             vaTextureFormat         ImportanceMap;
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+            vaTextureFormat         AAFinalAOResult;
+#endif
 
             BufferFormats( )
             {
@@ -96,6 +99,9 @@ namespace VertexAsylum
                 AOResultLowQ                = vaTextureFormat::R8_UNORM;
 #endif
                 ImportanceMap               = vaTextureFormat::R8_UNORM;
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+                AAFinalAOResult             = vaTextureFormat::R8_UNORM;
+#endif
             }
         };
 
@@ -111,6 +117,9 @@ namespace VertexAsylum
 #ifdef SSAO_ALLOW_INTERNAL_SHADER_DEBUGGING
         mutable bool                                m_debugShowSamplesAtCursor;
         vaVector2i                                  m_debugShowSamplesAtCursorPos;
+#endif
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+        mutable bool                                m_debugUseAlternativeApply;
 #endif
 
         BufferFormats                               m_formats;
@@ -128,6 +137,10 @@ namespace VertexAsylum
         shared_ptr<vaTexture>                       m_pingPongHalfResultB;
         shared_ptr<vaTexture>                       m_finalResults;
         shared_ptr<vaTexture>                       m_finalResultsArrayViews[4];
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+        shared_ptr<vaTexture>                       m_AAFinalResults;
+        shared_ptr<vaTexture>                       m_AAFinalResultsArrayViews[4];
+#endif
         shared_ptr<vaTexture>                       m_normals;
         shared_ptr<vaTexture>                       m_loadCounter;
         shared_ptr<vaTexture>                       m_importanceMap;

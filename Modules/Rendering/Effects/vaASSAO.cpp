@@ -38,6 +38,9 @@ vaASSAO::vaASSAO( )
 #endif
     m_debugRefSamplesDistribution   = 1.7f;
     m_debugExperimentalFullscreenReferencePath = false;
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+    m_debugUseAlternativeApply      = false;
+#endif
 }
 
 void vaASSAO::IHO_Draw( )
@@ -160,6 +163,11 @@ void vaASSAO::IHO_Draw( )
 #endif
     ImGui::Checkbox( "Debug: Show sample heatmap", &m_debugShowSampleHeatmap );
     if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Number of samples per pixel; constant at Low/Medium/High, variable at Highest (Adaptable)" );
+
+#ifdef SSAO_ENABLE_ALTERNATIVE_APPLY
+    ImGui::Checkbox( "Debug: Use alternative 'Apply'", &m_debugUseAlternativeApply );
+#endif
+
 
     // ImGui::Checkbox( "Debug: Experimental Fullscreen Reference Path ", &m_debugExperimentalFullscreenReferencePath );
     // if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "No interleaved rendering, 64 samples, other setting like quality level High, no depth preparation, etc - just one pass." );

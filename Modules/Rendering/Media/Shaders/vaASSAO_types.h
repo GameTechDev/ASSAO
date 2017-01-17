@@ -74,6 +74,8 @@ namespace VertexAsylum
 // it's certainly an option especially if scratch memory size is of high importance on Low preset.
 #define SSAO_USE_SEPARATE_LOWQ_AORESULTS_TEXTURE    0
 
+#define SSAO_ENABLE_ALTERNATIVE_APPLY
+
 struct ASSAOConstants
 {
     vaVector2               ViewportPixelSize;                      // .zw == 1.0 / ViewportSize.xy

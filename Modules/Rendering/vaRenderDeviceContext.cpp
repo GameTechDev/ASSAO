@@ -41,7 +41,7 @@ void vaRenderDeviceContext::SetRenderTarget( const std::shared_ptr<vaTexture> & 
 
     if( anyRT != NULL )
     {
-        assert( ( anyRT->GetType( ) == vaTextureType::Texture2D ) || ( anyRT->GetType( ) == vaTextureType::Texture2DMS ) );   // others not supported yet
+        assert( ( anyRT->GetType( ) == vaTextureType::Texture2D ) || ( anyRT->GetType( ) == vaTextureType::Texture2DMS ) || ( anyRT->GetType( ) == vaTextureType::Texture2DArray ) || ( anyRT->GetType( ) == vaTextureType::Texture2DMSArray ) );   // others not supported yet
         vp.X = 0;
         vp.Y = 0;
         vp.Width = anyRT->GetViewedSliceSizeX( );

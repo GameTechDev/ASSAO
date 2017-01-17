@@ -684,7 +684,7 @@ void vaTextureDX11::ProcessResource( bool notAllBindViewsNeeded )
         // not the cleanest way to do this - should probably get updated and also assert on _TYPELESS
         if( GetSRVFormat() == vaTextureFormat::Unknown )
             m_srvFormat = m_resourceFormat;
-        m_srv = vaDirectXTools::CreateShaderResourceView( m_resource, (DXGI_FORMAT)GetSRVFormat(), m_viewedMipSlice );
+        m_srv = vaDirectXTools::CreateShaderResourceView( m_resource, (DXGI_FORMAT)GetSRVFormat(), m_viewedMipSlice, m_viewedArraySlice );
     }
 
     if( ( GetBindSupportFlags( ) & vaTextureBindSupportFlags::RenderTarget ) != 0 )
