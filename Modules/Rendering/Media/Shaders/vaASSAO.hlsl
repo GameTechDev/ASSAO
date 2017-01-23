@@ -48,7 +48,7 @@ static const uint g_numTaps[5]   = { 3, 5, 12, 0, 0 };
 #define SSAO_TILT_SAMPLES_AMOUNT                                        (0.4)
 //
 #define SSAO_HALOING_REDUCTION_ENABLE_AT_QUALITY_PRESET                 (1)         // to disable simply set to 99 or similar
-#define SSAO_HALOING_REDUCTION_AMOUNT                                   (0.8)       // values from 0.0 - 1.0, 1.0 means max weighting (will cause artifacts, 0.8 is more reasonable)
+#define SSAO_HALOING_REDUCTION_AMOUNT                                   (0.6)      // values from 0.0 - 1.0, 1.0 means max weighting (will cause artifacts, 0.8 is more reasonable)
 //
 #define SSAO_NORMAL_BASED_EDGES_ENABLE_AT_QUALITY_PRESET                (2)         // to disable simply set to 99 or similar
 #define SSAO_NORMAL_BASED_EDGES_DOT_THRESHOLD                           (0.5)       // use 0-0.1 for super-sharp normal-based edges
