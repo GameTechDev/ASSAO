@@ -222,7 +222,7 @@ void vaApplication::Initialize( )
         ToggleFullscreen( );
 
     m_renderDevice->CreateSwapChain( m_currentWindowClientSizeX, m_currentWindowClientSizeY, true, m_hWnd );
-    //m_renderDevice->CreateSwapChain( 3840, 2160, true, m_hWnd ); <- don't ask, just for measurements...
+    //m_renderDevice->CreateSwapChain( 3840, 2160, true, m_hWnd ); //<- don't ask, just for measurements...
 
     vaRenderingCore::OnAPIInitialized( );
 
