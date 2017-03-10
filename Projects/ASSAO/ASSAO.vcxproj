@@ -124,7 +124,7 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>$(SolutionDir)\Tools\Binaries\xd.exe -dc_embedded_assaoshader $(ProjectDir)ASSAO\ASSAO.hlsl $(ProjectDir)ASSAO\ASSAO_shader.c</Command>
+      <Command>"$(SolutionDir)\Tools\Binaries\xd.exe" -dc_embedded_assaoshader "$(ProjectDir)ASSAO\ASSAO.hlsl" "$(ProjectDir)ASSAO\ASSAO_shader.c"</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Message>Compiling ASSAO.hlsl shader into .c file</Message>

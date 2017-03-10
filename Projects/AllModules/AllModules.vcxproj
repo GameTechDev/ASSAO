@@ -401,7 +401,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>$(ProjectDir)..\..\Modules\Rendering\EmbedRenderingMedia.bat $(ProjectDir)..\..\Modules\Rendering\</Command>
+      <Command>"$(ProjectDir)..\..\Modules\Rendering\EmbedRenderingMedia.bat" "$(ProjectDir)..\..\Modules\Rendering\"</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Message>(Re)embedding media (can be disabled)</Message>
@@ -433,7 +433,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <CustomBuildStep>
-      <Command>$(ProjectDir)..\..\Modules\Rendering\EmbedRenderingMedia.bat $(ProjectDir)..\..\Modules\Rendering\</Command>
+      <Command>"$(ProjectDir)..\..\Modules\Rendering\EmbedRenderingMedia.bat" "$(ProjectDir)..\..\Modules\Rendering\"</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Message>(Re)embedding media (can be disabled)</Message>
