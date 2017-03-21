@@ -899,7 +899,7 @@ void           ASSAODX11::PrepareDepths( const ASSAO_Settings & settings, const 
     {
         //VA_SCOPE_CPUGPU_TIMER( PrepareDepths, drawContext.APIContext );
 
-        if( settings.SkipHalfPixelsOnLowQualityLevel )
+        if( settings.QualityLevel < 0 )
         {
             dx11Context->OMSetRenderTargets( _countof(twoDepths), twoDepths, NULL );
             FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsHalf );
@@ -915,7 +915,7 @@ void           ASSAODX11::PrepareDepths( const ASSAO_Settings & settings, const 
         //VA_SCOPE_CPUGPU_TIMER( PrepareDepthsAndNormals, drawContext.APIContext );
 
         ID3D11UnorderedAccessView * UAVs[] = { m_normals.UAV };
-        if( settings.SkipHalfPixelsOnLowQualityLevel )
+        if( settings.QualityLevel < 0 )
         {
             dx11Context->OMSetRenderTargetsAndUnorderedAccessViews( _countof(twoDepths), twoDepths, NULL, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, UAVs, NULL );
             FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormalsHalf );
@@ -972,12 +972,13 @@ void           ASSAODX11::GenerateSSAO( const ASSAO_Settings & settings, const A
 
     for( int pass = 0; pass < passCount; pass++ )
     {
-        if( settings.SkipHalfPixelsOnLowQualityLevel && ( (pass == 1) || (pass == 2) ) )
+        if( (settings.QualityLevel < 0) && ( (pass == 1) || (pass == 2) ) )
             continue;
 
         int blurPasses = settings.BlurPassCount;
         blurPasses = Min( blurPasses, cMaxBlurPassCount );
 
+#ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
         if( settings.QualityLevel == 3 )
         {
             // if adaptive, at least one blur pass needed as the first pass needs to read the final texture results - kind of awkward
@@ -986,7 +987,9 @@ void           ASSAODX11::GenerateSSAO( const ASSAO_Settings & settings, const A
             else
                 blurPasses = Max( 1, blurPasses );
         } 
-        else if( settings.QualityLevel == 0 )
+        else 
+#endif
+        if( settings.QualityLevel <= 0 )
         {
             // just one blur pass allowed for minimum quality 
             blurPasses = Min( 1, settings.BlurPassCount );
@@ -1023,7 +1026,8 @@ void           ASSAODX11::GenerateSSAO( const ASSAO_Settings & settings, const A
 #endif
             dx11Context->PSSetShaderResources( SSAO_TEXTURE_SLOT0, 5, SRVs );
 
-            FullscreenPassDraw( dx11Context, m_pixelShaderGenerate[(!adaptiveBasePass)?(settings.QualityLevel):(4)] );
+            int shaderIndex = Max( 0, (!adaptiveBasePass)?(settings.QualityLevel):(4) );
+            FullscreenPassDraw( dx11Context, m_pixelShaderGenerate[shaderIndex] );
 
             // remove textures from slots 0, 1, 2, 3 to avoid API complaints
             dx11Context->PSSetShaderResources( SSAO_TEXTURE_SLOT0, 5, zeroSRVs );
@@ -1050,7 +1054,7 @@ void           ASSAODX11::GenerateSSAO( const ASSAO_Settings & settings, const A
                 ID3D11ShaderResourceView * SRVs[] = { pPingRT->SRV };
                 dx11Context->PSSetShaderResources( SSAO_TEXTURE_SLOT2, _countof(SRVs), SRVs );
 
-                if( settings.QualityLevel != 0 )
+                if( settings.QualityLevel > 0 )
                 {
                     if( wideBlursRemaining > 0 )
                     {
@@ -1064,7 +1068,7 @@ void           ASSAODX11::GenerateSSAO( const ASSAO_Settings & settings, const A
                 }
                 else
                 {
-                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartBlur ); // just for quality level 0
+                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartBlur ); // just for quality level 0 (and -1)
                 }
 
                 Swap( pPingRT, pPongRT );
@@ -1084,7 +1088,7 @@ void           ASSAODX11::Draw( const ASSAO_Settings & settings, const ASSAO_Inp
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const ASSAO_InputsDX11 * inputs = static_cast<const ASSAO_InputsDX11 *>( _inputs );
 
-    assert( settings.QualityLevel >= 0 && settings.QualityLevel < 4 );
+    assert( settings.QualityLevel >= -1 && settings.QualityLevel <= 3 );
 #ifndef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
     if( settings.QualityLevel == 3 )
     {
@@ -1210,13 +1214,10 @@ void           ASSAODX11::Draw( const ASSAO_Settings & settings, const ASSAO_Inp
 
             ID3D11BlendState * blendState = ( inputs->DrawOpaque ) ? ( m_blendStateOpaque ) : ( m_blendStateMultiply );
             
-            if( settings.QualityLevel == 0 )
-            {
-                if( settings.SkipHalfPixelsOnLowQualityLevel )
-                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartHalfApply, blendState );
-                else
+            if( settings.QualityLevel < 0 )
+                FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartHalfApply, blendState );
+            else if( settings.QualityLevel == 0 )
                     FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
-            }
             else
                 FullscreenPassDraw( dx11Context, m_pixelShaderApply, blendState );
         }
@@ -1426,12 +1427,12 @@ void ASSAODX11::UpdateConstants( const ASSAO_Settings & settings, const ASSAO_In
         consts.LoadCounterAvgDiv                = 9.0f / (float)( m_quarterSize.x * m_quarterSize.y * 255.0 );
 
         // Special settings for lowest quality level - just nerf the effect a tiny bit
-        if( settings.QualityLevel == 0 )
+        if( settings.QualityLevel <= 0 )
         {
             //consts.EffectShadowStrength     *= 0.9f;
             effectSamplingRadiusNearLimit   *= 1.50f;
 
-            if( settings.SkipHalfPixelsOnLowQualityLevel )
+            if( settings.QualityLevel < 0 )
                 consts.EffectRadius             *= 0.8f;
         }
         effectSamplingRadiusNearLimit /= tanHalfFOVY; // to keep the effect same regardless of FOV

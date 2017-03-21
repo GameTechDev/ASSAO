@@ -32,7 +32,6 @@ void ASSAOWrapper::IHO_Draw( )
 
     // extension for "Lowest"
     int qualityLevelUI = m_settings.QualityLevel+1;
-    if( m_settings.SkipHalfPixelsOnLowQualityLevel ) qualityLevelUI--;
 
     // Keyboard input (but let the ImgUI controls have input priority)
     if( !ImGui::GetIO( ).WantCaptureKeyboard )
@@ -68,11 +67,10 @@ void ASSAOWrapper::IHO_Draw( )
 
     // extension for "Lowest"
 #ifdef INTEL_SSAO_ENABLE_ADAPTIVE_QUALITY
-    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, 0, 3 );
+    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, -1, 3 );
 #else
-    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, 0, 2 );
+    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, -1, 2 );
 #endif
-    m_settings.SkipHalfPixelsOnLowQualityLevel = qualityLevelUI == 0;
 
     ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 0.75f, 0.75f, 0.75f, 1.0f ) );
 
@@ -86,7 +84,7 @@ void ASSAOWrapper::IHO_Draw( )
 #endif
     }
 
-    if( m_settings.QualityLevel == 0 )
+    if( m_settings.QualityLevel <= 0 )
     {
         ImGui::InputInt( "Simple blur passes (0-1)", &m_settings.BlurPassCount );
         if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "For Low quality, only one optional simple blur pass can be applied (recommended); settings above 1 are ignored" );

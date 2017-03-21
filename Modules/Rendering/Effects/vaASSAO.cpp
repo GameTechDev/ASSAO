@@ -48,7 +48,6 @@ void vaASSAO::IHO_Draw( )
     
     // extension for "Lowest"
     int qualityLevelUI = m_settings.QualityLevel+1;
-    if( m_settings.SkipHalfPixelsOnLowQualityLevel ) qualityLevelUI--;
 
     if( !ImGui::GetIO( ).WantCaptureKeyboard )
     {
@@ -71,9 +70,7 @@ void vaASSAO::IHO_Draw( )
     ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 1.0f, 0.8f, 0.8f, 1.0f ) );
     ImGui::Combo( "Quality level", &qualityLevelUI, "Lowest\0Low\0Medium\0High\0Highest (adaptive)\0Reference\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
 
-    // extension for "Lowest"
-    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, 0, 4 );
-    m_settings.SkipHalfPixelsOnLowQualityLevel = qualityLevelUI == 0;
+    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, -1, 4 );
 
     if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Each quality level is roughly 2x more costly than the previous, except the Highest (adaptive) which is variable but, in general, above High" );
     ImGui::PopStyleColor( 1 );
@@ -93,7 +90,7 @@ void vaASSAO::IHO_Draw( )
         m_debugRefSamplesDistribution = vaMath::Clamp( m_debugRefSamplesDistribution, 0.5f, 2.0f );
     }
 
-    if( m_settings.QualityLevel == 0 )
+    if( m_settings.QualityLevel <= 0 )
     {
         ImGui::InputInt( "Simple blur passes (0-1)", &m_settings.BlurPassCount );
         if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "For Low quality, only one optional simple blur pass can be applied (recommended); settings above 1 are ignored" );

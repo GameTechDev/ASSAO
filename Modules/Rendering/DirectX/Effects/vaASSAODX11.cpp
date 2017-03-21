@@ -385,7 +385,7 @@ void vaASSAODX11::UpdateTextures( vaDrawContext & drawContext, int width, int he
     needsUpdate |= prevScissorRect != m_fullResOutScissorRect;
 
 #if SSAO_USE_SEPARATE_LOWQ_AORESULTS_TEXTURE
-    vaTextureFormat AOResultsFormat = ( m_settings.QualityLevel == 0 ) ? m_formats.AOResultLowQ : m_formats.AOResult;
+    vaTextureFormat AOResultsFormat = ( m_settings.QualityLevel <= 0 ) ? m_formats.AOResultLowQ : m_formats.AOResult;
 
     if( (m_pingPongHalfResultA != nullptr) && (m_pingPongHalfResultA->GetSRVFormat() != AOResultsFormat ) )
         needsUpdate = true;
@@ -522,12 +522,12 @@ void vaASSAODX11::UpdateConstants( vaDrawContext & drawContext, const vaMatrix4x
         consts.LoadCounterAvgDiv                    = 9.0f / (float)( m_quarterSize.x * m_quarterSize.y * 255.0 );
 
         // Special settings for lowest quality level - just nerf the effect a tiny bit
-        if( m_settings.QualityLevel == 0 )
+        if( m_settings.QualityLevel <= 0 )
         {
             //consts.EffectShadowStrength         *= 0.9f;
             effectSamplingRadiusNearLimit       *= 1.50f;
 
-            if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+            if( m_settings.QualityLevel < 0 )
                 consts.EffectRadius             *= 0.8f;
         }
         effectSamplingRadiusNearLimit /= tanHalfFOVY; // to keep the effect same regardless of FOV
@@ -636,7 +636,7 @@ void vaASSAODX11::PrepareDepths( vaDrawContext & drawContext, vaTexture & depthT
     {
         VA_SCOPE_CPUGPU_TIMER( PrepareDepths, drawContext.APIContext );
 
-        if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+        if( m_settings.QualityLevel < 0 )
         {
             apiContext->SetRenderTargets( 2, twoDepths, nullptr, true );
             FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsHalf );
@@ -652,7 +652,7 @@ void vaASSAODX11::PrepareDepths( vaDrawContext & drawContext, vaTexture & depthT
         VA_SCOPE_CPUGPU_TIMER( PrepareDepthsAndNormals, drawContext.APIContext );
 
         shared_ptr<vaTexture> uavs[] = { m_normals };
-        if( m_settings.SkipHalfPixelsOnLowQualityLevel )
+        if( m_settings.QualityLevel < 0 )
         {
             apiContext->SetRenderTargetsAndUnorderedAccessViews( 2, twoDepths, nullptr, SSAO_NORMALMAP_OUT_UAV_SLOT, 1, uavs, true );
             FullscreenPassDraw( dx11Context, m_pixelShaderPrepareDepthsAndNormalsHalf );
@@ -703,7 +703,7 @@ void vaASSAODX11::GenerateSSAO( vaDrawContext & drawContext, const vaMatrix4x4 &
 
     for( int pass = 0; pass < passCount; pass++ )
     {
-        if( m_settings.SkipHalfPixelsOnLowQualityLevel && ( (pass == 1) || (pass == 2) ) )
+        if( ( m_settings.QualityLevel < 0 ) && ( ( pass == 1 ) || ( pass == 2 ) ) )
             continue;
 
         int blurPasses = m_settings.BlurPassCount;
@@ -717,7 +717,8 @@ void vaASSAODX11::GenerateSSAO( vaDrawContext & drawContext, const vaMatrix4x4 &
             else
                 blurPasses = vaMath::Max( 1, blurPasses );
         } 
-        else if( m_settings.QualityLevel == 0 )
+        else
+        if( m_settings.QualityLevel <= 0 )
         {
             // just one blur pass allowed for minimum quality 
             blurPasses = vaMath::Min( 1, m_settings.BlurPassCount );
@@ -763,7 +764,8 @@ void vaASSAODX11::GenerateSSAO( vaDrawContext & drawContext, const vaMatrix4x4 &
                 vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, m_finalResults->SafeCast<vaTextureDX11*>( )->GetSRV( ), SSAO_TEXTURE_SLOT4 );
             }
 
-            FullscreenPassDraw( dx11Context, m_pixelShaderGenerate[(!adaptiveBasePass)?(m_settings.QualityLevel):(5)] );
+            int shaderIndex = vaMath::Max( 0, (!adaptiveBasePass)?(m_settings.QualityLevel):(5) );
+            FullscreenPassDraw( dx11Context, m_pixelShaderGenerate[shaderIndex] );
 
             // to avoid API complaints
             vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, ( ID3D11ShaderResourceView* )nullptr, SSAO_TEXTURE_SLOT4 );
@@ -809,7 +811,7 @@ void vaASSAODX11::GenerateSSAO( vaDrawContext & drawContext, const vaMatrix4x4 &
 
                 vaDirectXTools::SetToD3DContextAllShaderTypes( dx11Context, (*pPingRT)->SafeCast<vaTextureDX11*>( )->GetSRV( ), SSAO_TEXTURE_SLOT2 );
 
-                if( m_settings.QualityLevel != 0 )
+                if( m_settings.QualityLevel > 0 )
                 {
                     if( wideBlursRemaining > 0 )
                     {
@@ -823,7 +825,7 @@ void vaASSAODX11::GenerateSSAO( vaDrawContext & drawContext, const vaMatrix4x4 &
                 }
                 else
                 {
-                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartBlur ); // just for quality level 0
+                    FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartBlur ); // // just for quality level 0 (and -1)
                 }
 
                 std::swap( pPingRT, pPongRT );
@@ -1008,13 +1010,10 @@ void vaASSAODX11::Draw( vaDrawContext & drawContext, const vaMatrix4x4 & projMat
         
         apiContext->SetViewportAndScissorRect( applyVP, m_fullResOutScissorRect );
 
-        if( m_settings.QualityLevel == 0 )
-        {
-            if( m_settings.SkipHalfPixelsOnLowQualityLevel )
-                FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartHalfApply, blendState );
-            else
-                FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
-        }
+        if( m_settings.QualityLevel < 0 )
+            FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartHalfApply, blendState );
+        else if( m_settings.QualityLevel == 0 )
+            FullscreenPassDraw( dx11Context, m_pixelShaderNonSmartApply, blendState );
         else
             FullscreenPassDraw( dx11Context, m_pixelShaderApply, blendState );
 
