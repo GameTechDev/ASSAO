@@ -429,7 +429,7 @@ void PrepareDepthMip( const float4 inPos/*, const float2 inUV*/, int mipLevel, o
     float dummyUnused2;
     float falloffCalcMulSq, falloffCalcAdd;
  
-
+    [unroll]
     for( int i = 0; i < 4; i++ )
     {
         float4 depths = depthsArr[i];
@@ -440,7 +440,7 @@ void PrepareDepthMip( const float4 inPos/*, const float2 inUV*/, int mipLevel, o
 
         float4 dists = depths - closest.xxxx;
 
-        float4 weights = saturate( dot(dists, dists) * falloffCalcMulSq.xxxx + 1.0.xxxx );
+        float4 weights = saturate( dists * dists * falloffCalcMulSq + 1.0 );
 
         float smartAvg = dot( weights, depths ) / dot( weights, float4( 1.0, 1.0, 1.0, 1.0 ) );
 
@@ -921,6 +921,9 @@ void GenerateSSAOShadowsInternal( out float outShadowTerm, out float4 outEdges, 
     outShadowTerm   = occlusion;    // Our final 'occlusion' term (0 means fully occluded, 1 means fully lit)
     outEdges        = edgesLRTB;    // These are used to prevent blurring across edges, 1 means no edge, 0 means edge, 0.5 means half way there, etc.
     outWeight       = weightSum;
+
+    //outShadowTerm   = frac( pixCenterPos.x );
+    //outShadowTerm   = frac( pixZ );
 }
 
 void PSGenerateQ0( in float4 inPos : SV_POSITION/*, in float2 inUV : TEXCOORD0*/, out float2 out0 : SV_Target0 )
@@ -1191,6 +1194,7 @@ float PSGenerateImportanceMap( in float4 inPos : SV_POSITION, in float2 inUV : T
     float avg = 0.0;
     float minV = 1.0;
     float maxV = 0.0;
+    [unroll]
     for( int i = 0; i < 4; i++ )
     {
         float4 vals = g_FinalSSAO.GatherRed( g_PointClampSampler, float3( gatherUV, i ) );
