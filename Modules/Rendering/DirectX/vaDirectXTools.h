@@ -488,7 +488,7 @@ namespace VertexAsylum
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // vaDirectXConstantsBuffer
    template< typename ElementType, int DefaultSlot >
-   void vaDirectXConstantsBuffer<ElementType, DefaultSlot>::Create( const ElementType * initializeData = NULL )
+   void vaDirectXConstantsBuffer<ElementType, DefaultSlot>::Create( const ElementType * initializeData )
    {
       vaDirectXBuffer<ElementType>::Create( 1, D3D11_BIND_CONSTANT_BUFFER, initializeData, D3D11_USAGE_DEFAULT );
    }
@@ -557,7 +557,7 @@ namespace VertexAsylum
    // vaDirectXIndexBuffer
    //
    template< typename ElementType >
-   void vaDirectXIndexBuffer<ElementType>::Create( int elementCount, const ElementType * initializeData = NULL )
+   void vaDirectXIndexBuffer<ElementType>::Create( int elementCount, const ElementType * initializeData )
    {
       // Must be uint16 or uint32
       assert( sizeof(ElementType) == 2 || sizeof(ElementType) == 4 );

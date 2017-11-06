@@ -28,6 +28,8 @@
 
 #include "assert.h"
 
+#include "intrin.h"
+
 bool evilg_inOtherMessageLoop_PreventTick = false;
 
 namespace VertexAsylum
