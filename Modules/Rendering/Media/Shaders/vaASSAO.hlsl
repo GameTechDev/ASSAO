@@ -91,7 +91,7 @@ Texture2D           g_BlurInput                 : register( T_CONCATENATER( SSAO
 
 Texture2DArray      g_FinalSSAO                 : register( T_CONCATENATER( SSAO_TEXTURE_SLOT4 ) );
 
-RWTexture2D<float4> g_NormalsOutputUAV          : register( U_CONCATENATER( SSAO_NORMALMAP_OUT_UAV_SLOT ) ); 
+RWTexture2D<unorm float4> g_NormalsOutputUAV    : register( U_CONCATENATER( SSAO_NORMALMAP_OUT_UAV_SLOT ) ); 
 RWTexture1D<uint>   g_LoadCounterOutputUAV      : register( U_CONCATENATER( SSAO_LOAD_COUNTER_UAV_SLOT ) ); 
 
 Texture2D           g_DebuggingOutputSRV        : register( T_CONCATENATER( SSAO_TEXTURE_SLOT5 ) );

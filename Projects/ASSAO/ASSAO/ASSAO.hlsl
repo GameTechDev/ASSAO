@@ -139,7 +139,7 @@ Texture2D           g_BlurInput                 : register( t2 );   // correspon
 
 Texture2DArray      g_FinalSSAO                 : register( t4 );   // corresponds to SSAO_TEXTURE_SLOT4
 
-RWTexture2D<float4> g_NormalsOutputUAV          : register( u4 );   // corresponds to SSAO_NORMALMAP_OUT_UAV_SLOT
+RWTexture2D<unorm float4> g_NormalsOutputUAV    : register( u4 );   // corresponds to SSAO_NORMALMAP_OUT_UAV_SLOT
 RWTexture1D<uint>   g_LoadCounterOutputUAV      : register( u4 );   // corresponds to SSAO_LOAD_COUNTER_UAV_SLOT 
 
 
