@@ -1103,7 +1103,7 @@ float4 PSApply( in float4 inPos : SV_POSITION/*, in float2 inUV : TEXCOORD0*/ ) 
     
     ao = centerVal.x;
 
-#if 1   // for debugging - set to 0 to disable last pass high-res blur
+#if 1   // change to 0 if you want to disable last pass high-res blur (for debugging purposes, etc.)
     float4 edgesLRTB = UnpackEdges( centerVal.y );
 
     // convert index shifts to sampling offsets
