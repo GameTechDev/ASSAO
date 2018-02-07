@@ -1053,7 +1053,7 @@ float4 PSApply( in float4 inPos : SV_POSITION/*, in float2 inUV : TEXCOORD0*/ ) 
     ao = dot( float4( ao, aoH, aoV, aoD ), blendWeights ) / blendWeightsSum;
 #endif
 
-    return float4( ao.xxx, 0 );
+    return float4( ao.xxx, 1.0 );
 }
 
 // edge-ignorant blur in x and y directions, 9 pixels touched (for the lowest quality level 0)
