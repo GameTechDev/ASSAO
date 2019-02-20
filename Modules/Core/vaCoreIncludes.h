@@ -44,7 +44,6 @@
 //#include "Containers\vaSparseArray.h"
 #include "Containers\vaTrackerTrackee.h"
 
-#include "Misc\vaCRC64.h"
 #include "Misc\vaTelemetryServer.h"
 #include "Misc\vaSignal.h"
 #include "Misc\vaBenchmarkTool.h"

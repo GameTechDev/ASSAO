@@ -51,7 +51,7 @@ namespace VertexAsylum
       static ID3D11ShaderResourceView *   CreateShaderResourceView( ID3D11Resource * texture, DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN, int mipSlice = -1, int arraySlice = -1 );
       static ID3D11DepthStencilView *     CreateDepthStencilView( ID3D11Resource * texture, DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN );
       static ID3D11RenderTargetView *     CreateRenderTargetView( ID3D11Resource * texture, DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN, int mipSlice = -1, int arraySlice = -1 );
-      static ID3D11UnorderedAccessView *  CreateUnorderedAccessView( ID3D11Resource * texture, DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN );
+      static ID3D11UnorderedAccessView *  CreateUnorderedAccessView( ID3D11Resource * texture, DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN, int mipSlice = -1, int arraySlice = -1 );
       static ID3D11Buffer *               CreateBuffer( uint32 sizeInBytes, uint32 bindFlags, D3D11_USAGE usage, uint32 cpuAccessFlags = 0, uint32 miscFlags = 0, uint32 structByteStride = 0, const void * initializeData = NULL );
 
       // Common depth/stencil states

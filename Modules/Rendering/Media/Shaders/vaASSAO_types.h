@@ -35,6 +35,9 @@ namespace VertexAsylum
 
 #endif
 
+#define SSAO_THREAD_GROUP_SIZE_X					8
+#define SSAO_THREAD_GROUP_SIZE_Y					8
+
 #define SSAO_SAMPLERS_SLOT0                         0
 #define SSAO_SAMPLERS_SLOT1                         1
 #define SSAO_SAMPLERS_SLOT2                         2
@@ -60,6 +63,18 @@ namespace VertexAsylum
 
 #define SSAO_DEPTH_MIP_LEVELS                       4
 
+#define SSAO_QUALITY_LEVEL_LOWEST                   0
+#define SSAO_QUALITY_LEVEL_LOW                      1
+#define SSAO_QUALITY_LEVEL_MEDIUM                   2
+#define SSAO_QUALITY_LEVEL_HIGH                     3
+#define SSAO_QUALITY_LEVEL_HIGHEST                  4
+#define SSAO_QUALITY_LEVEL_REFERENCE                5
+#define SSAO_QUALITY_LEVELS                         SSAO_QUALITY_LEVEL_REFERENCE + 1 // Lowest, Low, Medium, High, Highest, Reference
+
+#define SSAO_MODE_PIXEL_SHADER                      0
+#define SSAO_MODE_COMPUTE_SHADER                    1
+#define SSAO_MODES                                  SSAO_MODE_COMPUTE_SHADER + 1
+
 #define SSAO_ALLOW_INTERNAL_SHADER_DEBUGGING
 
 // just for debugging
@@ -76,6 +91,9 @@ namespace VertexAsylum
 
 struct ASSAOConstants
 {
+    vaVector2				ViewportSize;
+    vaVector2               ViewportHalfSize;
+
     vaVector2               ViewportPixelSize;                      // .zw == 1.0 / ViewportSize.xy
     vaVector2               HalfViewportPixelSize;                  // .zw == 1.0 / ViewportHalfSize.xy
 
@@ -110,12 +128,14 @@ struct ASSAOConstants
     int                     PassIndex;
     vaVector2               QuarterResPixelSize;                    // used for importance map only
 
-    vaVector4               PatternRotScaleMatrices[5];
+    vaVector4               PatternRotScaleMatrices[ 5 ];
 
     float                   UnusedNormalsUnpackMul;
     float                   UnusedNormalsUnpackAdd;
     float                   DetailAOStrength;
-    float                   Dummy0;
+    int						QualityLevel;
+
+    vaVector4               FullPatternRotScaleMatrices[ 20 ];
 
     // **********************************************************************************
     // ** stuff below not needed in production code **
@@ -135,7 +155,7 @@ struct ASSAOConstants
     vaVector2i              FullResOffset;
 #endif
     //
-    vaVector4               SamplesArray[SSAO_MAX_REF_TAPS];
+    vaVector4               SamplesArray[ SSAO_MAX_REF_TAPS ];
     //
     // **********************************************************************************
 

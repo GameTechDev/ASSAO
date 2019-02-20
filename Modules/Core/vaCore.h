@@ -39,6 +39,8 @@
 
 #pragma once
 
+#define _SILENCE_STDEXT_ALLOCATORS_DEPRECATION_WARNING
+
 // CRT's memory leak detection
 #if defined(DEBUG) || defined(_DEBUG)
 

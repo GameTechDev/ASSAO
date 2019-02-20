@@ -49,6 +49,8 @@ namespace VertexAsylum
 
         vaApplication *             m_application;
 
+        D3D_FEATURE_LEVEL           m_createdFeatureLevel;
+
     private:
         vaDirectXCore               m_directXCore;
         vaDebugCanvas2DDX11         m_canvas2D;
@@ -98,6 +100,8 @@ namespace VertexAsylum
         void                        SetMainRenderTargetToImmediateContext( );
 
         //static vaRenderDeviceDX11 &    GetMainInstance( )                                                     { assert( s_mainDevice != NULL ); return *s_mainDevice; }
+
+        D3D_FEATURE_LEVEL           GetCreatedFeatureLevel()  const                                           { return m_createdFeatureLevel; }
 
     public:
         ID3D11Device *              GetPlatformDevice( ) const                                                  { m_device; }

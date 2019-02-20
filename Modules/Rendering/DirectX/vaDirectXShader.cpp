@@ -722,8 +722,6 @@ namespace VertexAsylum
 
                     vaShaderCacheKey cacheKey;
                     CreateCacheKey( cacheKey );
-                    vaCRC64 crc; 
-                    crc.AddString( cacheKey.StringPart );
 
                     fileName += L"shaderdump_" + vaStringTools::SimpleWiden( m_entryPoint ) + L"_" + vaStringTools::SimpleWiden( m_shaderModel ) /*+ L"_" + vaStringTools::SimpleWiden( vaStringTools::Format( "0x%" PRIx64, crc.GetCurrent() ) )*/ + L".shaderasm";
 

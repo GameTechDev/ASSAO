@@ -545,7 +545,9 @@ ID3D11ShaderResourceView * vaDirectXTools::CreateShaderResourceView( ID3D11Resou
                     }
                     else
                     {
-                        assert( false ); //not implemented
+                        desc.Texture2DArray.MipLevels = 1;
+                        desc.Texture2DArray.MostDetailedMip = mipSlice;
+                        //assert( false ); //not implemented
                     }
                 }
                 if( arraySlice != -1 )
@@ -747,12 +749,16 @@ ID3D11RenderTargetView * vaDirectXTools::CreateRenderTargetView( ID3D11Resource 
     }
 }
 
-ID3D11UnorderedAccessView * vaDirectXTools::CreateUnorderedAccessView( ID3D11Resource * resource, DXGI_FORMAT format )
+ID3D11UnorderedAccessView * vaDirectXTools::CreateUnorderedAccessView( ID3D11Resource * resource, DXGI_FORMAT format, int mipSlice, int arraySlice )
 {
     ID3D11UnorderedAccessView * ret = NULL;
 
     D3D11_UNORDERED_ACCESS_VIEW_DESC desc;
     bool descInitialized = false;
+
+    // there's no way to bind multiple mip slices at once, so -1 means slice 0
+    if( mipSlice == -1 )
+        mipSlice = 0;
 
     {
         D3D11_UAV_DIMENSION dimension = D3D11_UAV_DIMENSION_UNKNOWN;
@@ -764,8 +770,33 @@ ID3D11UnorderedAccessView * vaDirectXTools::CreateUnorderedAccessView( ID3D11Res
             {
                 D3D11_TEXTURE2D_DESC descTex2D;
                 texture2D->GetDesc( &descTex2D );
-                dimension = ( descTex2D.ArraySize == 1 ) ? ( D3D11_UAV_DIMENSION_TEXTURE2D ) : ( D3D11_UAV_DIMENSION_TEXTURE2DARRAY );
-                desc = CD3D11_UNORDERED_ACCESS_VIEW_DESC( texture2D, dimension, format );
+
+                if( arraySlice == -1 )
+                {
+                    // if array, bind the whole array
+                    dimension = ( descTex2D.ArraySize == 1 ) ? ( D3D11_UAV_DIMENSION_TEXTURE2D ) : ( D3D11_UAV_DIMENSION_TEXTURE2DARRAY );
+                    desc = CD3D11_UNORDERED_ACCESS_VIEW_DESC( texture2D, dimension, format );
+
+                    if( dimension == D3D11_UAV_DIMENSION_TEXTURE2D )
+                    {
+                        desc.Texture2D.MipSlice = mipSlice;
+                    }
+                    else
+                    {
+                        desc.Texture2DArray.MipSlice = mipSlice;
+                        assert( desc.Texture2DArray.ArraySize == descTex2D.ArraySize );
+                    }
+                }
+                else
+                {
+                    // if array but specific slice requested, bind specific slice
+                    assert( arraySlice < (int)descTex2D.ArraySize );
+                    dimension = D3D11_UAV_DIMENSION_TEXTURE2DARRAY;
+                    desc = CD3D11_UNORDERED_ACCESS_VIEW_DESC( texture2D, dimension, format );
+                    desc.Texture2DArray.MipSlice = mipSlice;
+                    desc.Texture2DArray.FirstArraySlice = arraySlice;
+                    desc.Texture2DArray.ArraySize = 1;            // size > 1 when selecting specific slice not supported at the moment
+                }
                 descInitialized = true;
                 SAFE_RELEASE( texture2D );
             }

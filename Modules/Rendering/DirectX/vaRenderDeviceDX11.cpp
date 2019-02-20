@@ -52,7 +52,6 @@ static LPD3D11CREATEDEVICE                   s_DynamicD3D11CreateDevice = NULL;
 
 //vaRenderDeviceDX11 * vaRenderDeviceDX11::s_mainDevice = NULL;
 
-
 vaRenderDeviceDX11::vaRenderDeviceDX11( const vaConstructorParamsBase * params ) : vaRenderDevice( ), m_canvas2D( )
 {
     m_device = NULL;
@@ -66,6 +65,8 @@ vaRenderDeviceDX11::vaRenderDeviceDX11( const vaConstructorParamsBase * params )
     m_mainDepthSRV = NULL;
 
     m_application = NULL;
+
+    m_createdFeatureLevel = D3D_FEATURE_LEVEL_11_0;
 
     memset( &m_backbufferTextureDesc, 0, sizeof( m_backbufferTextureDesc ) );
 
@@ -182,20 +183,19 @@ bool vaRenderDeviceDX11::Initialize( )
        flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-       D3D_FEATURE_LEVEL requestedFeatureLevels[] = { D3D_FEATURE_LEVEL_11_0 }; // D3D_FEATURE_LEVEL_11_1, 
-       D3D_FEATURE_LEVEL createdFeatureLevel;
+       D3D_FEATURE_LEVEL requestedFeatureLevels[] = { D3D_FEATURE_LEVEL_11_0 };
 
        ID3D11Device *         device = nullptr;
        ID3D11DeviceContext *  deviceImmediateContext = nullptr;
 
        //s_DynamicD3D11CreateDevice
-       hr = s_DynamicD3D11CreateDevice( adapter.Get( ), ddt, NULL, flags, requestedFeatureLevels, _countof( requestedFeatureLevels ), D3D11_SDK_VERSION, &device, &createdFeatureLevel, &deviceImmediateContext );
+       hr = s_DynamicD3D11CreateDevice( adapter.Get( ), ddt, NULL, flags, requestedFeatureLevels, _countof( requestedFeatureLevels ), D3D11_SDK_VERSION, &device, &m_createdFeatureLevel, &deviceImmediateContext );
 
        if( ((flags & D3D11_CREATE_DEVICE_DEBUG) != 0) && FAILED( hr ) )
        {
            VA_WARN( L"Error trying to create D3D11 device, might be because of the debug flag and missing Windows 10 SDK, retrying..." );
            flags &= ~D3D11_CREATE_DEVICE_DEBUG;
-           hr = s_DynamicD3D11CreateDevice( adapter.Get( ), ddt, NULL, flags, requestedFeatureLevels, _countof( requestedFeatureLevels ), D3D11_SDK_VERSION, &device, &createdFeatureLevel, &deviceImmediateContext );
+           hr = s_DynamicD3D11CreateDevice( adapter.Get( ), ddt, NULL, flags, requestedFeatureLevels, _countof( requestedFeatureLevels ), D3D11_SDK_VERSION, &device, &m_createdFeatureLevel, &deviceImmediateContext );
        }
 
        if( FAILED( hr ) )

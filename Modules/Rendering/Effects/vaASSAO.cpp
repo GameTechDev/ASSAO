@@ -47,7 +47,7 @@ void vaASSAO::IHO_Draw( )
     // Keyboard input (but let the ImgUI controls have input priority)
     
     // extension for "Lowest"
-    int qualityLevelUI = m_settings.QualityLevel+1;
+    int qualityLevelUI = m_settings.QualityLevel;
 
     if( !ImGui::GetIO( ).WantCaptureKeyboard )
     {
@@ -55,7 +55,7 @@ void vaASSAO::IHO_Draw( )
             qualityLevelUI--;
         if( ( vaInputKeyboardBase::GetCurrent( ) != nullptr ) && vaInputKeyboardBase::GetCurrent( )->IsKeyClicked( KK_OEM_6 ) )
             qualityLevelUI++;
-        qualityLevelUI = vaMath::Clamp( qualityLevelUI, 0, 5 );
+        qualityLevelUI = vaMath::Clamp( qualityLevelUI, SSAO_QUALITY_LEVEL_LOWEST, SSAO_QUALITY_LEVEL_REFERENCE );
         if( ( vaInputKeyboardBase::GetCurrent( ) != nullptr ) && vaInputKeyboardBase::GetCurrent( )->IsKeyClicked( KK_OEM_1 ) )
             m_settings.AdaptiveQualityLimit -= 0.025f;
         if( ( vaInputKeyboardBase::GetCurrent( ) != nullptr ) && vaInputKeyboardBase::GetCurrent( )->IsKeyClicked( KK_OEM_7 ) )
@@ -63,34 +63,30 @@ void vaASSAO::IHO_Draw( )
         m_settings.AdaptiveQualityLimit = vaMath::Clamp( m_settings.AdaptiveQualityLimit, 0.0f, 1.0f );
     }
 
-    ImGui::PushItemWidth( 120.0f );
+    ImGui::PushItemWidth( 180.0f );
 
     ImGui::Text( "Performance/quality settings:" );
+	ImGui::Combo("ASSAO Mode", &m_settings.ASSAOMode, "Pixel Shader\0Compute Shader");
+    m_settings.ASSAOMode = vaMath::Clamp(m_settings.ASSAOMode, SSAO_MODE_PIXEL_SHADER, SSAO_MODE_COMPUTE_SHADER);
 
+	ImGui::PushItemWidth(120.0f);
     ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 1.0f, 0.8f, 0.8f, 1.0f ) );
-    ImGui::Combo( "Quality level", &qualityLevelUI, "Lowest\0Low\0Medium\0High\0Highest (adaptive)\0Reference\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
+    ImGui::Combo( "Quality level", &qualityLevelUI, "Lowest\0Low\0Medium\0High\0Highest\0Reference\0\0" );  // Combo using values packed in a single constant string (for really quick combo)
 
-    m_settings.QualityLevel = vaMath::Clamp( qualityLevelUI-1, -1, 4 );
+    m_settings.QualityLevel = qualityLevelUI;
 
-    if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Each quality level is roughly 2x more costly than the previous, except the Highest (adaptive) which is variable but, in general, above High" );
+    if( ImGui::IsItemHovered() ) ImGui::SetTooltip( "Each quality level is roughly 2x more costly than the previous." );
     ImGui::PopStyleColor( 1 );
 
     ImGui::PushStyleColor( ImGuiCol_Text, ImVec4( 0.75f, 0.75f, 0.75f, 1.0f ) );
 
-    if( m_settings.QualityLevel == 3 )
-    {
-        ImGui::Indent( );
-        ImGui::SliderFloat( "Adaptive quality target", &m_settings.AdaptiveQualityLimit, 0.0f, 1.0f, "%.3f" );
-        m_settings.AdaptiveQualityLimit = vaMath::Clamp( m_settings.AdaptiveQualityLimit, 0.0f, 1.0f );
-        ImGui::Unindent( );
-    }
-    if( m_settings.QualityLevel == 4 )
+    if( m_settings.QualityLevel == SSAO_QUALITY_LEVEL_REFERENCE )
     {
         ImGui::InputFloat( "Reference Sample Distribution POW", &m_debugRefSamplesDistribution, 0.05f, 0.0f, 2 );
         m_debugRefSamplesDistribution = vaMath::Clamp( m_debugRefSamplesDistribution, 0.5f, 2.0f );
     }
 
-    if( m_settings.QualityLevel <= 0 )
+    if( m_settings.QualityLevel <= SSAO_QUALITY_LEVEL_LOW )
     {
         ImGui::InputInt( "Simple blur passes (0-1)", &m_settings.BlurPassCount );
         if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "For Low quality, only one optional simple blur pass can be applied (recommended); settings above 1 are ignored" );
@@ -100,7 +96,7 @@ void vaASSAO::IHO_Draw( )
         ImGui::InputInt( "Smart blur passes (0-6)", &m_settings.BlurPassCount );
         if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "The amount of edge-aware smart blur; each additional pass increases blur effect but adds to the cost" );
     }
-    m_settings.BlurPassCount = vaMath::Clamp( m_settings.BlurPassCount, 0, 6 );
+    m_settings.BlurPassCount = vaMath::Clamp( m_settings.BlurPassCount, 1, 6 );
 
     ImGui::Separator();
     ImGui::Text( "Visual settings:" );
@@ -145,18 +141,29 @@ void vaASSAO::IHO_Draw( )
     // ImGui::Checkbox( "Smoothen normals", &m_settings.SmoothenNormals );
     // if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Experimental - smoothens normals; fixes some aliasingartifacts, but makes some worse" );
 
-    ImGui::Checkbox( "Debug: Show normals", &m_debugShowNormals );
-    if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Show normals used forSSAO (either generated or provided, and after smoothing if selected)" );
+    static int debugOption = -1;
+    if(debugOption != -1 && ImGui::Button( "Clear currently selected debug option" ))
+    {
+        debugOption = -1;
+    }
 
-    ImGui::Checkbox( "Debug: Show edges", &m_debugShowEdges );
-    if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Show edges used for edge-aware smart blur" );
+    ImGui::RadioButton( "Debug: Show normals", &debugOption, 0 ); //ImGui::SameLine();
+    if( ImGui::IsItemHovered() ) ImGui::SetTooltip( "Show normals used forSSAO (either generated or provided, and after smoothing if selected)" );
+
+    ImGui::RadioButton( "Debug: Show edges", &debugOption, 1 ); //ImGui::SameLine();
+    if( ImGui::IsItemHovered() ) ImGui::SetTooltip( "Show edges used for edge-aware smart blur" );
 
 #ifdef SSAO_ALLOW_INTERNAL_SHADER_DEBUGGING
-    ImGui::Checkbox( "Debug: Show samples at cursor", &m_debugShowSamplesAtCursor );
-    if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Shows individual SSAO samples under the mouse cursor location" );
+    ImGui::RadioButton( "Debug: Show samples at cursor", &debugOption, 2 );
+    if( ImGui::IsItemHovered() ) ImGui::SetTooltip( "Shows individual SSAO samples under the mouse cursor location" );
 #endif
-    ImGui::Checkbox( "Debug: Show sample heatmap", &m_debugShowSampleHeatmap );
-    if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "Number of samples per pixel; constant at Low/Medium/High, variable at Highest (Adaptable)" );
+    ImGui::RadioButton( "Debug: Show sample heatmap", &debugOption, 3 );
+    if( ImGui::IsItemHovered() ) ImGui::SetTooltip( "Number of samples per pixel; constant at Low/Medium/High, variable at Highest (Adaptable)" );
+
+    m_debugShowNormals = (debugOption == 0);
+    m_debugShowEdges = (debugOption == 1);
+    m_debugShowSamplesAtCursor = (debugOption == 2);
+    m_debugShowSampleHeatmap = (debugOption == 3);
 
     // ImGui::Checkbox( "Debug: Experimental Fullscreen Reference Path ", &m_debugExperimentalFullscreenReferencePath );
     // if( ImGui::IsItemHovered( ) ) ImGui::SetTooltip( "No interleaved rendering, 64 samples, other setting like quality level High, no depth preparation, etc - just one pass." );

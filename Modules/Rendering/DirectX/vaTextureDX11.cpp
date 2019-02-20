@@ -708,13 +708,13 @@ void vaTextureDX11::ProcessResource( bool notAllBindViewsNeeded )
 
     if( ( GetBindSupportFlags( ) & vaTextureBindSupportFlags::UnorderedAccess ) != 0 )
     {
-        // non-0 mip levels not supported at the moment
-        assert( m_viewedMipSlice == -1 );
+        //// non-0 mip levels not supported at the moment
+        //assert( m_viewedMipSlice == -1 );
 
         // not the cleanest way to do this - should probably get updated and also assert on _TYPELESS
-        if( GetRTVFormat( ) == vaTextureFormat::Unknown )
+        if( GetUAVFormat( ) == vaTextureFormat::Unknown )
             m_uavFormat = m_resourceFormat;
-        m_uav = vaDirectXTools::CreateUnorderedAccessView( m_resource, (DXGI_FORMAT)GetUAVFormat() );
+        m_uav = vaDirectXTools::CreateUnorderedAccessView( m_resource, (DXGI_FORMAT)GetUAVFormat(), m_viewedMipSlice, m_viewedArraySlice );
     }
 
     if( ( GetBindSupportFlags( ) & vaTextureBindSupportFlags::CreateAutoMipViews ) != 0 )

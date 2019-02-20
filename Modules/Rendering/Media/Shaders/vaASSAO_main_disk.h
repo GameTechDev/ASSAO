@@ -3,7 +3,34 @@
 
 #define INTELSSAO_MAIN_DISK_SAMPLE_COUNT (32)
 
-static const float4 g_samplePatternMain[INTELSSAO_MAIN_DISK_SAMPLE_COUNT] =
+// NOTE: This needs to be kept in sync with the definition in ASSAO.hlsl.
+#ifndef SSAO_PARTIAL_PRECISION
+#define SSAO_PARTIAL_PRECISION 1
+#endif  // SSAO_PARTIAL_PRECISION
+
+#if SSAO_PARTIAL_PRECISION
+#define lpint       min16int
+#define lpuint      min16uint
+#define lpuint2     min16uint2
+#define lpuint3     min16uint3
+#define lpfloat     min16float
+#define lpfloat2    min16float2
+#define lpfloat3    min16float3
+#define lpfloat4    min16float4
+#define lpfloat2x2  min16float2x2
+#else
+#define lpint       int
+#define lpuint      uint
+#define lpuint2     uint2
+#define lpuint3     uint3
+#define lpfloat     float
+#define lpfloat2    float2
+#define lpfloat3    float3
+#define lpfloat4    float4
+#define lpfloat2x2  float2x2
+#endif
+
+static const lpfloat4 g_samplePatternMain[INTELSSAO_MAIN_DISK_SAMPLE_COUNT] =
 {
      0.78488064,  0.56661671,  1.500000, -0.126083,
      0.26022232, -0.29575172,  1.500000, -1.064030,

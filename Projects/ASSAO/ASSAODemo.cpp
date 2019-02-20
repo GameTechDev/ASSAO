@@ -788,10 +788,11 @@ void ASSAODemo::OnRender( )
             if( !m_settings.UseDeferred )
                 vaRenderMeshManager::GetInstance().Draw( drawContext, m_meshDrawList );
         }
-
+    }
         // Apply SSAO
         if( m_settings.EnableSSAO )
         {
+            vaDrawContext drawContext(*m_camera.get(), mainContext, *m_renderingGlobals.get(), m_lighting.get());
             if( m_triggerCompareDevNonDev )
             {
                 m_triggerCompareDevNonDev = false;
@@ -896,6 +897,7 @@ void ASSAODemo::OnRender( )
         if( m_settings.ShowWireframe )
         {
             VA_SCOPE_CPUGPU_TIMER( Wireframe, mainContext );
+            vaDrawContext drawContext(*m_camera.get(), mainContext, *m_renderingGlobals.get(), m_lighting.get());
             drawContext.PassType = vaRenderPassType::ForwardDebugWireframe;
 
             // this sets up global constants
@@ -911,11 +913,12 @@ void ASSAODemo::OnRender( )
 
         if( m_simpleShadowMap != nullptr )
         {
+            vaDrawContext drawContext(*m_camera.get(), mainContext, *m_renderingGlobals.get(), m_lighting.get());
             if( m_simpleShadowMap->GetVolumeShadowMapPlugin( ) != NULL )
                 m_simpleShadowMap->GetVolumeShadowMapPlugin()->StopUsing( drawContext, m_simpleShadowMap.get() );
             m_simpleShadowMap->StopUsing( drawContext );
         }
-    }
+    
 
     m_meshDrawList.Reset();
 
@@ -1254,10 +1257,11 @@ void ASSAODemo::OnRender( )
 
                     ImGui::Separator();
 
-                    if( ImGui::Button( "Compare dev vs non-dev versions at current settings" ) )
-                    {
-                        m_triggerCompareDevNonDev = true;
-                    }
+                    // not fully working yet
+                    // if( ImGui::Button( "Compare dev vs non-dev versions at current settings" ) )
+                    // {
+                    //     m_triggerCompareDevNonDev = true;
+                    // }
                 }
                 else if( m_settings.SSAOSelectedVersionIndex == 1 )
                     vaImguiHierarchyObject::DrawCollapsable( *m_SSAOEffect.get( ), true, true );
