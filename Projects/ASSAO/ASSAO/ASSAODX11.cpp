@@ -495,11 +495,6 @@ ASSAODX11::ASSAODX11( const ASSAO_CreateDescDX11 * createDesc )
     m_samplerStatePointMirror                       = NULL;
     m_samplerStateViewspaceDepthTap                 = NULL;
 
-    m_samplerStatePointClamp                        = NULL;
-    m_samplerStateLinearClamp                       = NULL;
-    m_samplerStatePointMirror                       = NULL;
-    m_samplerStateViewspaceDepthTap                 = NULL;
-
     m_blendStateMultiply                            = NULL;
     m_blendStateOpaque                              = NULL;
     m_depthStencilState                             = NULL;
