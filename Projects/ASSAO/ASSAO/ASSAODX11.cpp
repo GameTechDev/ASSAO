@@ -207,7 +207,6 @@ namespace
         D3D_PRIMITIVE_TOPOLOGY      m_primitiveTopology;
         ID3D11InputLayout *         m_inputLayout;
         ID3D11RasterizerState *     m_rasterizerState;
-        UINT                        m_numRTVs;
         ID3D11RenderTargetView *    m_RTVs[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT];
         ID3D11DepthStencilView *    m_DSV;
 
