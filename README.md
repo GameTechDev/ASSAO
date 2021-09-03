@@ -1,5 +1,11 @@
 # Adaptive Screen Space Ambient Occlusion
 
+---
+**Note:** this codebase is no longer being updated and has been superseded by https://github.com/GameTechDev/XeGTAO which is, in most use cases, better and faster screen space ambient occlusion implementation.
+
+---
+
+
 Demo solution is in /ASSAO.sln and requires Visual Studio 2015 to build
 
 Pre-built demo binary is in /Projects/ASSAO/ASSAO.exe
